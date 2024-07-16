@@ -2,4 +2,4 @@
 				1) Public classes in ts file
 					a) Public <functionname>(): void { }
 				2) To attach action to HTML tag:
-(click)="this.<functionname>()"
+                    b) (click)="this.<functionname>()"
