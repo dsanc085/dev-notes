@@ -1,0 +1,36 @@
+a. Tailwind
+    i. CSS framework
+        1) Weakness - size, loads more than is needed
+    ii. Pros of Tailwind
+        1) Post processor
+            a) Only includes the CSS classes you are using
+        2) Comes with Angular 16.2 and after
+    iii. Comes with layouts
+    iv. Adding Page:
+        1) In frontend:
+        2) ng generate component <name>
+        3) Add route to constants.ts (page/<name>
+        4) Register route: update app.module.ts,
+            a) { path: Constants.MY_SETTINGS_ROUTE:     component:  MySettingsComponent,        canActivate: [PageGuard.canActivate ]},
+        5) Add page path to ui_controls table in DB (if using security)
+            a) insert into uicontrols(id, name) values( 4000, 'page/my-settings' );
+        6) Nuke database
+        7) Add link
+            a) If using navbar: - edit navbar.content.ts
+    v. Tailwind Layouts
+        1) Spacing
+            a) 1 unit = 4pixels
+            b) m-[11px] - sets it manually
+            c) Margin = m, width = w
+            d) Gap - spacing between rows and columns
+                i) Gap-<value>
+        2) Uniform columns - grid grid-cols
+        3) Unique column spacing - flex
+            a) Flex-grow - fill in rest of space
+        4) Alignment
+            a) place-content-<name>
+    vii. Angular
+        1) Public classes in ts file
+            a) Public <functionname>(): void { }
+        2) To attach action to HTML tag:
+            b) (click)="this.<functionname>()"
