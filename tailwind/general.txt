@@ -29,8 +29,4 @@ a. Tailwind
             a) Flex-grow - fill in rest of space
         4) Alignment
             a) place-content-<name>
-    vii. Angular
-        1) Public classes in ts file
-            a) Public <functionname>(): void { }
-        2) To attach action to HTML tag:
-            b) (click)="this.<functionname>()"
+

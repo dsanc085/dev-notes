@@ -1,2 +1,6 @@
 1. Unit Tests - generally not useful
-2.
+    vii. Angular
+        1) Public classes in ts file
+            a) Public <functionname>(): void { }
+        2) To attach action to HTML tag:
+            b) (click)="this.<functionname>()"
