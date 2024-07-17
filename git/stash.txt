@@ -1,0 +1,3 @@
+git stash - store changes locally
+git stash list - list all stashes
+git stash apply - restore from stash
