@@ -1,0 +1,59 @@
+<div class="m-2.5">
+    <div class="grid grid-cols-2 mb-2.5">
+        <div class="font-bold text-3xl">My Settings</div>
+        <div class="flex place-content-end">
+            <button rbr-soft-button rbr-aria="Help" (click)="this.clickedHelp()" >Help</button>
+        </div>
+    </div>
+
+    <div class="ml-5">
+        <div class="flex flex-row">
+
+            <div class="flex flex-grow">
+                <mat-form-field class="w-[400px]">
+                    <mat-label>Full Name</mat-label>
+                    <input rbr-aria="Full Name" type="text" matInput />
+                    <mat-error></mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="flex flex-row">
+
+            <div class="flex flex-grow">
+                <mat-form-field class="w-[350px]">
+                    <mat-label>Starting Page</mat-label>
+                    <mat-select title="Starting Page" aria-label="Staring Page">
+                        <mat-option [value]=1>Default Welcome Page</mat-option>
+                        <mat-option [value]=2>My Dashboard</mat-option>
+                        <mat-option [value]=3>GCA / List All Contracts</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="flex flex-row">
+
+            <div class="flex flex-grow">
+                <mat-form-field class="w-[300px]">
+                    <mat-label>Time Zone</mat-label>
+                    <mat-select title="Time Zone" aria-label="Time Zone">
+                        <mat-option [value]=1>EDT / Eastern Daylight Time</mat-option>
+                        <mat-option [value]=2>CDT / Central Daylight Time</mat-option>
+                        <mat-option [value]=3>PDT / Pacific Daylight Time</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex flex-row place-content-center gap-5 mt-2.5">
+        <div>
+            <button rbr-outline-button rbr-aria="Reset" (click)="this.clickedReset()">Reset</button>
+        </div>
+        <div>
+            <button rbr-solid-button rbr-aria="Save" (click)="this.clickedSave()">Save</button>
+        </div>
+    </div>
+
+</div>

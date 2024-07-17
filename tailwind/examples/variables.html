@@ -1,0 +1,24 @@
+<div class="m-2.5">
+    <div class="grid grid-cols-2">
+        <div>
+            Exercise 1
+        </div>
+        <div class="flex place-content-end">
+            Help Button
+        </div>
+    </div>
+    <div class="m-5 grid grid-cols-3 gap-5">
+        <div class="p-[15px] mat-elevation-z4 "
+             [ngClass] = " {
+      'mat-elevation-z4'   : !this.box1MouseOver,
+      'mat-elevation-z12'  : this.box1MouseOver
+    }"
+             (mouseenter)="this.box1MouseOver=true"
+             (mouseleave)="this.box1MouseOver=false"
+        >
+            Box 1
+        </div>
+        <div class="p-[15px] mat-elevation-z6">Box 2</div>
+        <div class="p-[15px] mat-elevation-z4">Box 3</div>
+    </div>
+</div>
