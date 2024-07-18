@@ -1,0 +1,8 @@
+          <mat-select #orderTypeDropdown formControlName="orderType" >
+            <mat-option [value]=1>Market Order</mat-option>
+            <mat-option [value]=2>Limit Order</mat-option>
+          </mat-select>
+
+<ng-container *ngIf="orderTypeDropdown.value==2">
+
+</ng-container>

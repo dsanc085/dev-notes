@@ -1,0 +1,37 @@
+	• Layouts using Tailwinds CSS
+		○ Basic
+		○ Advanced
+		○ Fixed Titles
+		○ Animation
+			§ Appear and dissappear
+	• Form controls
+		○ Buttons
+		○ Text Fields
+		○ Text Areas
+		○ Drop downs
+		○ Radio buttons
+		○ Pop up menus
+	• Structural Directives
+		○ ngIf
+			§ Hiding and showing sections of text
+			§ <div *ngIf="this.userId==15">
+				□ Show section of HTML
+		○ ngFor
+			§ Use for looping
+	• Navigation
+	• Angular Material
+	• 2 way and 1 way binding
+		○ Template-based binding
+		○ Reactive forms
+			§ One form object
+			§ Listen for changes on form field
+			§ One variable - myForm
+			§ Add validation
+				□ Show error messages
+	• Component Life Cycle
+	• Difference between components and services
+	• React Extensions / Observables / Subjects, Arrow Functions, rest calls (asynchronous messages)
+		○ How to use observables to invoke rest call
+		○ Render items in HTML after rest cal
+		○ Send messages from one web app to another
+			§ Body to header, vice versa

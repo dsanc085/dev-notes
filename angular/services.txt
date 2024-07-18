@@ -1,1 +1,10 @@
 ng generate service services/<name>
+
+add this to the componenet.ts file:
+
+  public constructor(private router: Router,
+                     private counterService: CounterService) {
+
+  }
+
+

@@ -1,0 +1,13 @@
+1. Add service formBuilder:
+    constructor(private formBuilder: FormBuilder)
+2. Add class variable form:
+    public myForm: FormGroup;
+3. Initialize variable:
+    this.myForm = this.formBuilder.group({
+      actionType: [null, Validators.required],
+      orderType:  [null, Validators.required],
+      limitPrice: [null, null],
+      quantity:   [null, this.validatorService.whiteSpaceValidator()],
+      symbol:     [null, this.validatorService.whiteSpaceValidator()]
+    });
+    where

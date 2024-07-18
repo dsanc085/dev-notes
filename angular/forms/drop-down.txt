@@ -1,0 +1,13 @@
+        <mat-form-field subscriptSizing="dynamic">
+          <mat-label>Action</mat-label>
+
+          <mat-select formControlName="actionType">
+            <mat-option [value]=1>Buy Stock</mat-option>
+            <mat-option [value]=2>Buy Mutual Fund</mat-option>
+            <mat-option [value]=3>Sell Stock</mat-option>
+            <mat-option [value]=4>Sell Mutual Fund</mat-option>
+          </mat-select>
+
+          <mat-error>Action is Required</mat-error>
+
+        </mat-form-field>
