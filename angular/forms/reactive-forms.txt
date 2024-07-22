@@ -12,7 +12,8 @@ TS File:
       symbol:     [null, this.validatorService.whiteSpaceValidator()]
     });
 4. Create this in the html file:
-    a. <mat-form-field subscriptSizing="dynamic">
+    a. <form [formGroup]="this.myForm" novalidate autocomplete="off">
+    b. <mat-form-field subscriptSizing="dynamic">
             <mat-label>Label</mat-label>
             <!-- Insert proper mat field -->
             <mat-error>Message</mat-error>
@@ -22,3 +23,5 @@ TS File:
                     <mat-option [value]=>Option 1</mat-option>
                </mat-select>
     b. Text Box: <input type="text" matInput />
+6. To reset form, in ts file:
+    a. this.myForm.reset();
