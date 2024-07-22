@@ -14,22 +14,6 @@ In TS file:
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 Example:
   private turnOnLimitPriceValidatorConditionally():void {
     this.orderTypeSubscription = this.myForm.controls.orderType.valueChanges.subscribe((aNewOrderType: number) => {
