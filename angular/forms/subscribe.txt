@@ -1,0 +1,64 @@
+In TS file:
+1. Create private function that holds subscribe command
+      private turnOnLimitPriceValidatorConditionally():void {
+      }
+2. Create private variable of type Subscription
+    private orderTypeSubscription: Subscription;
+3. In function, assign variable to subscription. This is usually with valueChanges event
+    this.orderTypeSubscription = this.myForm.controls.orderType.valueChanges.subscribe((aNewOrderType: number) => {
+    });
+4. Add logic to subscribe function
+5. In ngOnDestroy(), unsubscribe:
+    if(this.orderTypeSubscription) {
+        this.orderTypeSubscription.unsubscribe();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Example:
+  private turnOnLimitPriceValidatorConditionally():void {
+    this.orderTypeSubscription = this.myForm.controls.orderType.valueChanges.subscribe((aNewOrderType: number) => {
+
+        // get reference to limit text box
+        let limitPriceTextBox: AbstractControl = this.myForm.controls?.limitPrice;
+
+        if (aNewOrderType == this.MARKET_ORDER_TYPE) {
+          // user selected market order, turn off the custom validator
+
+          console.log("User selected market order");
+
+          limitPriceTextBox.clearValidators();
+        } else if (aNewOrderType == this.LIMIT_ORDER_TYPE) {
+          // user selected limit order, turn on the limit price validator
+
+          console.log("User selected limit order");
+
+          limitPriceTextBox.setValidators([this.validatorService.isLimitPrice()]);
+        }
+
+        limitPriceTextBox.updateValueAndValidity();
+      }
+    )
+  }
+
+   public ngOnDestroy(): void {
+      if (this.orderTypeSubscription) {
+        console.log("Hanging up the phone");
+        this.orderTypeSubscription.unsubscribe();
+      }
+    }

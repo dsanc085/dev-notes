@@ -1,0 +1,5 @@
+Center Horizontally: self-center
+
+Homogenous: grid grid-cols-x
+
+Wrap: flex flex-row flex-row-wrap
