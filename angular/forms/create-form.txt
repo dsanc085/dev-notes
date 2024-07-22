@@ -1,0 +1,19 @@
+1. Use Reactive forms
+    a. Reactive Forms (scalable, reusable, testable) vs Template Forms (simple, straightforward, less complicated)
+2. In TS File:
+    a. Inject formBuilder service and Validator:
+          constructor(private formBuilder: FormBuilder,
+                      private validatorService: ValidatorService) {
+          }
+    b. Create public variable for FormGroup:
+        public myForm: FormGroup;
+    c. In ngOnInit, initialize object:
+        this.myForm = this.formBuilder.group({
+          actionType: [null, Validators.required],
+          orderType:  [null, Validators.required],
+          limitPrice: [null, null],
+          quantity:   [null, [Validators.required, this.validatorService.isNumericValidator()]],
+          symbol:     [null, [Validators.required, this.validatorService.whiteSpaceValidator()]]
+        });
+    d.
+

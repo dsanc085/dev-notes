@@ -1,0 +1,29 @@
+1. Text interpolation: {{ <variable or expression> }}
+    a. Only use variable so less binding
+2. Binding - live connection between template and model
+    a. Text Interpolation
+    b. Property Binding
+    c. Event Binding
+    d. Two way binding
+3. Text Interpolation
+    a. {{ <variable name> }}
+4. Property Binding - moves value in one direction from component property to target element.
+    a. [] - [src]="variableName" - evaluates the right side to use the value of variableName, not the actual string "variableName"
+    b. NOTE - this only applies if the property exists for that element (ie src exists for <img> but not <div>)
+5. Attribute Binding - same as property binding but precede with attr. T
+    a. [attr.<attribute name>] - [attr.aria-label]="actionName"
+    b. NOTE - this will always add the attribute to the element even if that element doesn't have it
+6. Class and CSS Binding - can be used for dynamic CSS https://angular.dev/guide/templates/class-binding
+7. Event Binding - listen for and respond to user actions https://angular.dev/guide/templates/event-binding
+    a. Target Event name with parenthesis with template statement to the right (click)="expression"
+    b.Keyboard Events: (keydown.shift.t)
+8. Two Way Binding - listen for event and updates between parent and child components
+    a. [( )]
+9. Control Flow: https://angular.dev/guide/templates/control-flow
+    a. @if
+    b. @for
+    c. @switch
+10. Local Variable: @let
+11. Pipes - {{ submitDate | date }}
+12. Template Reference Variables
+    a. <input #phone /> - reference with <button (click)="callPhone(phone.value)">

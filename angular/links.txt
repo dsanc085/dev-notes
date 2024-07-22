@@ -1,0 +1,9 @@
+1. Two ways:
+    a. Use event binding:
+        i. (click)="clickPage()" in html
+        ii. in TS page, add public function and use router.navigate
+              public clickPage1(): void {
+                this.router.navigate([Constants.PAGE1_ROUTE]).then();
+              }
+    b. Use routerLink
+        i. [routerLink]="<route>"

@@ -1,8 +1,9 @@
-1. Add service formBuilder:
+TS File:
+1. Import and add service formBuilder:
     constructor(private formBuilder: FormBuilder)
 2. Add class variable form:
     public myForm: FormGroup;
-3. Initialize variable:
+3. Initialize variable, where first item is value of formControlName in HTML file. 2nd item in array is Validator
     this.myForm = this.formBuilder.group({
       actionType: [null, Validators.required],
       orderType:  [null, Validators.required],
@@ -10,4 +11,14 @@
       quantity:   [null, this.validatorService.whiteSpaceValidator()],
       symbol:     [null, this.validatorService.whiteSpaceValidator()]
     });
-    where
+4. Create this in the html file:
+    a. <mat-form-field subscriptSizing="dynamic">
+            <mat-label>Label</mat-label>
+            <!-- Insert proper mat field -->
+            <mat-error>Message</mat-error>
+       </mat-form-field>
+5. For form fields:
+    a. Select: <mat-select formControlName="ActionType">
+                    <mat-option [value]=>Option 1</mat-option>
+               </mat-select>
+    b. Text Box: <input type="text" matInput />

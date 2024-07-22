@@ -1,0 +1,4 @@
+https://angular.dev/guide/templates/interpolation
+
+1. Embed expressions into text: {{ }}
+2.
