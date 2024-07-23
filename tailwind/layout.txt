@@ -1,6 +1,7 @@
-Center Horizontally: self-center
+Center vertically: self-center
 
 Homogenous: grid grid-cols-x
+horizontal spacing: flex place-content-<location>
 
 Wrap: flex flex-row flex-row-wrap
 
