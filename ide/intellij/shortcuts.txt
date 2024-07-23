@@ -1,0 +1,9 @@
+shift shift - search all
+ctrl-alt-l format code
+ctrl-d duplicate line
+f2 - find code issues
+ctrl-/ comment code
+alt-f7 find references
+
+alt-enter fix line of code
+ctrl-alt-s settings
