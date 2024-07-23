@@ -1,3 +1,5 @@
+https://angular.dev/guide/directives
+
 1. ng generate directive directives/<name>
 2. file <name>.directive.ts is created
 3. In ts file:
@@ -5,3 +7,9 @@
     b. in constructor, add ElementRef: public constructor(private elementRef: ElementRef) {}
     c. You can now reference this.elementRef - ie: const buttonElement = this.elementRef.nativeElement as HTMLButtonElement;
     d. Can use TypeScript to modify this.elementRef
+4. To detect events, use @Host Listener
+    a. Import Host Listener: import {Directive, ElementRef, HostListener} from '@angular/core';
+    b. In ts file:
+        i. Use @HostListener('<event>') on<event>() { }   @HostListener('mouseenter') onMouseEnter() {
+                                                            this.highlight('yellow');
+                                                          }
