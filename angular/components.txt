@@ -1,0 +1,3 @@
+Angular piece that contains html and can contain logic. Can be reused.
+
+ng generate component <name>

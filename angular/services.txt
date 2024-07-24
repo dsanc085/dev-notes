@@ -1,3 +1,5 @@
+Singleton functionality that can be shared. Usually used to share data or functionality between components. Modular and resuable.
+
 ng generate service services/<name>
 
 add this to the componenet.ts file:
