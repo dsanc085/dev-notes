@@ -1,4 +1,5 @@
 https://angular.dev/guide/directives
+Add behavior to elements such as styles
 
 1. ng generate directive directives/<name>
 2. file <name>.directive.ts is created
