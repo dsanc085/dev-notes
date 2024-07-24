@@ -1,0 +1,3 @@
+DTO - public variables used for rest calls, just a java class for backend and frontend
+
+1. ng generate class models/<name>
