@@ -1,0 +1,14 @@
+Rich text editor
+
+In ts file:
+    import {QuillModules} from "ngx-quill";
+
+    public quillModules: QuillModules = {
+    toolbar: true
+    };
+
+In html:
+              <quill-editor formControlName="supplementalComments" class="w-full h-full"
+                            [placeholder]="'Enter SRA contents here...'"
+                            [modules]="this.quillModules">
+              </quill-editor>
