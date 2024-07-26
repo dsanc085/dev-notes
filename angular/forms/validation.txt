@@ -1,0 +1,18 @@
+You can use the Validator service or make your own:
+
+import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
+
+  constructor(private formBuilder: FormBuilder,
+              private validatorService: ValidatorService) {
+  }
+
+Add to FormGroup object:
+
+    this.myForm = this.formBuilder.group({
+      actionType: [null, Validators.required],
+      orderType:  [null, Validators.required],
+      limitPrice: [null, null],
+      quantity:   [null, [Validators.required, this.validatorService.isNumericValidator()]],
+      symbol:     [null, [Validators.required, this.validatorService.whiteSpaceValidator()]]
+    });
+
