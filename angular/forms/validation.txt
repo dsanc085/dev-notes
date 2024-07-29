@@ -16,3 +16,31 @@ Add to FormGroup object:
       symbol:     [null, [Validators.required, this.validatorService.whiteSpaceValidator()]]
     });
 
+
+
+Custom Validation in directive: https://angular.dev/guide/forms/form-validation
+
+  public isNumericValidator(): ValidatorFn {
+
+    return (control: AbstractControl) => {
+
+      if (!control) {
+        // form is being initialized so do nothing
+        return null;
+      }
+
+      let enteredText: string = control.value;
+
+      if (!enteredText) {
+        //user has not entered text
+        return {'isNumeric' : 'This is a required field'}
+      }
+
+      if (enteredText.match(/^[0-9]+$/)) {
+        return null;
+      } else {
+        return {'isNumeric' : 'This is not a valid number'}
+      }
+
+    }
+  } // end of isNumericValidator
