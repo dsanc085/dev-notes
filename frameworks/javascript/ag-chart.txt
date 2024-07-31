@@ -1,0 +1,3 @@
+Options:
+rowModelType:
+ServerSide - uses getRow to dynamically load rows as needed (scrolling, screen size)
