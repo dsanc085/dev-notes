@@ -1,0 +1,4 @@
+1. Logic based on screen width:
+    a. min-[601px]:grid-cols-2   min-[1001px]:grid-cols-3   min-[1401px]:grid-cols-4"
+2. Dynamic
+    a. flex flex-row flex-wrap
