@@ -1,1 +1,5 @@
+Generate full height item:
 style="height: calc(100vh - 135px)"
+where 135px is any fixed item
+
+look at flex-col?
