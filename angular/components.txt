@@ -1,3 +1,48 @@
 Angular piece that contains html and can contain logic. Can be reused.
 
 ng generate component <name>
+
+Life Cycle:
+
+Order of Operations
+-------------------
+ 1. User has clicked on navbar item
+ 2. Router does it "canActivate" check
+	-- Is the router allowed to open this page?
+	-- If allowed, proceeed
+	-- If not, redirect the user to the "Denied" page
+
+
+ 3. Router creates a new **INSTANCE** of the page component
+
+		let page: ScrollIntoView = new ScrollIntoView()
+
+
+ 4. Constructor gets called
+	-- Any passed-in injectable services are injected
+
+
+ 5. ngOnInit() method is called    [if it's there]
+
+
+ 6. Render our HTML
+	-- Any Template Variables are created
+
+
+ 7. ngAfterViewInit()
+	-- At this point, the HTML is rendered
+	-- I can now get the height of a div using the template variable here
+
+	-- You can set the focus on a textbox here in code
+
+
+ 8. User can start using the page
+
+ --------------------------------
+
+ 9. User leaves the page
+    a. Router checks to see if the user is allowed to leave
+
+    b. Router calls the ngOnDestroy() method
+
+    c. Router destroys the component
