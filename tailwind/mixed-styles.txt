@@ -1,0 +1,5 @@
+To combine styles, use @apply:
+
+.show-div {
+    @apply transition-all ease-in-out duration-300 m-2.5;
+}

@@ -1,0 +1,16 @@
+Add id to div:
+            <div class="mat-elevation-z4 p-2.5 h-[200px] m-2.5" id="section1">
+              Section 1
+            </div>
+
+Inject FormUtilsService:
+  public constructor(public formUtilsService: FormUtilsService) {
+  }
+  or:
+  public formUtilsService: FormUtilsService = inject(FormUtilsService);
+
+
+Call scrollToTargetId:
+this.formUtilsService.scrollToTargetId(aTargetId);
+
+

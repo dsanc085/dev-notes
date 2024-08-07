@@ -1,0 +1,4 @@
+To set height to the rest of the page (dynamic height), use calc:
+
+1. style="height:calc(100vh - 50px);
+2. Tailwind: class="w-[calc(100vh-50px)]"
