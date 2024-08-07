@@ -1,0 +1,1 @@
+Use class fixed to make container stick to viewport

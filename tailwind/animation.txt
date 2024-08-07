@@ -1,0 +1,5 @@
+Use these classes:
+1. transition-all
+2. duration-300
+3. ease-in-out
+4. For hide: overflow-hidden and set margin, padding, width, to 0 as necesary
