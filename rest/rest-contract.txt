@@ -1,0 +1,18 @@
+ 	a. What is the URL?
+ 	   Rule:  Must start with /api
+
+ 	b. What is the URL Type?
+ 			GET			Used for read-only operations
+ 			PUT			Used for write operations and passing-in 1 parameter on the URL
+ 			POST   		Used for write operations and passing-in multiple parameters [no limit]
+ 			DELETE		Used for write operations involving deletes
+
+ 	c. What is passed-in?
+
+ 	d. What is returned?
+
+ 	e. What checks are made on the passed-in data?
+
+ 	f. What security roles are granted access to this REST call?
+
+ 	g. What does this REST call do
