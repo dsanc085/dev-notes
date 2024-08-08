@@ -1,0 +1,3 @@
+Async Pipe subscribes to an observable and returns the value
+
+It unsubscribes automatically upon component destruction

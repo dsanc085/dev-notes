@@ -1,0 +1,3 @@
+-lazy stream
+
+not executed until someone activates it

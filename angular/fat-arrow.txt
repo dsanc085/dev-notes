@@ -7,3 +7,5 @@ let sum = (x: number, y: number): number => {
 print (sum(10,20)); //prints 30
 
 https://www.tutorialsteacher.com/typescript/arrow-function
+
+Can access class instance

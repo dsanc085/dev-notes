@@ -7,3 +7,5 @@ alt-f7 find references
 
 alt-enter fix line of code
 ctrl-alt-s settings
+
+alt-enter
