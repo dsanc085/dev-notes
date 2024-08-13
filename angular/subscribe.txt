@@ -1,0 +1,10 @@
+Method called on observable. Can use anonymous function to set variables, such as endpoints or stream.
+
+Example:
+
+getData().subscribe( (aData: LookupDTO[]) => {
+  this.data = aData;
+}
+)
+
+where getData() returns an observable array of LookupDTO

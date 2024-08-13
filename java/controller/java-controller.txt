@@ -1,0 +1,5 @@
+Under src/main/java/com/<artifact>>/controller
+
+create new class <something>controller
+
+@RequestMapping - endpoint configuration
