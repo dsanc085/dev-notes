@@ -1,3 +1,14 @@
 Async Pipe subscribes to an observable and returns the value
 
 It unsubscribes automatically upon component destruction
+
+            <ng-container *ngIf="(this.obsPriorities | async) as priorities">
+
+              <!--  Rest call has come back and we have an array of priorities-->
+              <ng-container *ngFor="let dto of priorities">
+                <mat-option [value]="dto.id">
+                  {{dto.value}}
+                </mat-option>
+
+              </ng-container>
+            </ng-container>

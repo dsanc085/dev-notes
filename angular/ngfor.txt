@@ -1,0 +1,6 @@
+              <ng-container *ngFor="let dto of priorities">
+                <mat-option [value]="dto.id">
+                  {{dto.value}}
+                </mat-option>
+
+              </ng-container>
