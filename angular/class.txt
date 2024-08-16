@@ -1,0 +1,5 @@
+ng g class models/<name>
+
+when creating the variable, always set as New:
+
+public quote: GetQuoteDetailsDTO = new GetQuoteDetailsDTO();
