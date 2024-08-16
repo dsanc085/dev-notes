@@ -9,3 +9,12 @@ print (sum(10,20)); //prints 30
 https://www.tutorialsteacher.com/typescript/arrow-function
 
 Can access class instance
+
+  public quoteClicked(): void {
+    let currentSymbol: string = this.myForm.controls.symbol.value;
+    this.quoteService.getQuote(currentSymbol).subscribe( (aQuote: GetQuoteDetailsDTO) => {
+        // Rest call came back
+        this.quote = aQuote;
+      }
+    )
+  }
