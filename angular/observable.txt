@@ -1,3 +1,21 @@
 -lazy stream
 
 not executed until someone activates it
+
+Use of to convert a data type to observable:
+
+  public getAllContractSizes(): Observable<MyLookupDTO[]> {
+    let contractSizes: MyLookupDTO[] = [
+      {
+        id : 21,
+        value : "Fake Small (under $1m)"
+      },
+      {
+        id: 22,
+        value: "Fake Medium (under $50m)"
+      }
+    ];
+
+    return of(contractSizes).pipe(delay(5000));
+  }
+}
