@@ -8,3 +8,30 @@ getData().subscribe( (aData: LookupDTO[]) => {
 )
 
 where getData() returns an observable array of LookupDTO
+
+
+Another example:
+export class MyAddContractSubscribeComponent {
+  public priorities: MyLookupDTO[];
+  private subPriorities: Subscription;
+
+  public constructor(private myLookupService: MyLookupService ) {
+
+  }
+
+  public ngOnInit(): void {
+    this.subPriorities = this.myLookupService.getAllPriorities().subscribe(   (aData: MyLookupDTO[])=>{
+      // Rest call came back with data
+
+      // Stored returned data in class variable so we can process
+
+      this.priorities = aData;
+    } )
+  }
+
+  public ngOnDestroy(): void {
+    if (this.subPriorities) {
+      this.subPriorities.unsubscribe();
+    }
+  }
+}
