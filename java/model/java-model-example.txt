@@ -1,0 +1,39 @@
+Build the backend DTO
+ 	a. Create the backend DTO:  MyLookupDTO
+ 	   NOTE:  Have mercy on future developers and use the *SAME NAME* as the frontend DTO
+ 	   NOTE:  DTOs are always stored in the "models" directory
+
+ 	b. Add the class variables to MyLookupDTO
+
+ 	c. Have IntelliJ generate the getters & setters
+
+
+	The DTO should look like this:
+	------------------------------
+	package com.lessons.models;
+
+	import com.fasterxml.jackson.annotation.JsonProperty;
+
+	public class MyLookupDTO {
+	   @JsonProperty("id")
+		private int id;
+
+	   @JsonProperty("value")
+		private String value;
+
+		public int getId() {
+			return id;
+		}
+
+		public void setId(int id) {
+			this.id = id;
+		}
+
+		public String getValue() {
+			return value;
+		}
+
+		public void setValue(String value) {
+			this.value = value;
+		}
+	}

@@ -1,0 +1,38 @@
+	package com.lessons.services;
+
+	import com.lessons.models.MyLookupDTO;
+	import jakarta.annotation.Resource;
+	import org.slf4j.Logger;
+	import org.slf4j.LoggerFactory;
+	import org.springframework.jdbc.core.BeanPropertyRowMapper;
+	import org.springframework.jdbc.core.JdbcTemplate;
+	import org.springframework.stereotype.Service;
+
+	import javax.sql.DataSource;
+	import java.util.List;
+
+	@Service
+	public class MyLookupService {
+		private static final Logger logger = LoggerFactory.getLogger(MyLookupService.class);
+
+		private final BeanPropertyRowMapper<MyLookupDTO> rowMapper = new BeanPropertyRowMapper<>(MyLookupDTO.class);
+
+
+		@Resource
+		private DataSource dataSource;
+
+
+		public List<MyLookupDTO> getAllPriorities() {
+			String sql = """
+						select id, name as value
+						from alert_priorities
+						order by display_order
+					""";
+
+			JdbcTemplate jt = new JdbcTemplate(this.dataSource);
+
+			List<MyLookupDTO> priorities = jt.query(sql, rowMapper);
+
+			return priorities;
+		}
+	}
