@@ -2,3 +2,4 @@ Can do following:
 1. Component: ng g c <name>
 2. Service: ng g service services/<name of service without 'service' label>
 3. Class: ng g class models/<name of DTO>
+
