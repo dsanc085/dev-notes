@@ -12,3 +12,16 @@ It unsubscribes automatically upon component destruction
 
               </ng-container>
             </ng-container>
+
+
+Takes in observable:
+
+public obsPriorities: Observable<MyLookupDTO[]>;
+
+  public ngOnInit(): void {
+    this.obsPriorities = this.myLookupService.getAllPriorities().pipe(
+      tap((aData:MyLookupDTO[])=> {
+        console.log("Hello");
+      })
+    );
+  }
