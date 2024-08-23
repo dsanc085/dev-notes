@@ -1,0 +1,10 @@
+In TypeScript:
+
+		  public getAllPriorities(): Observable< MyLookupDTO[] > {
+
+	   	    // Construct the URL to get basic information about the user
+            const restUrl = environment.baseUrl + '/api/my-lookup/priorities';
+
+            // Return an observable that (when invoked) returns an array of LookupDataDTO objects
+            return this.httpClient.get <LookupDataDTO[]> (restUrl);
+		  }

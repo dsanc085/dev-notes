@@ -1,0 +1,26 @@
+          <ng-container *ngIf="(this.obsPriorities | async) as priorities; else loadingData">
+            <!-- This HTML fragment is rendered *AFTER* the REST call comes back with data -->
+
+            <!-- Priority Dropdown -->
+            <mat-form-field subscriptSizing="dynamic">
+                <mat-label>Priority!!!!!</mat-label>
+
+                <mat-select title="Select Priority" aria-label="Select Priority">
+
+                    <!-- Loop through the array of priorities -->
+                    <ng-container *ngFor="let dto of priorities">
+                      <mat-option [value]="dto.id">{{ dto.value }}</mat-option>
+                   </ng-container>
+
+                </mat-select>
+            </mat-form-field>
+
+          </ng-container>
+
+
+          <ng-template #loadingData>
+            <!-- Show the "Loading..." Message -->
+            <div class="p-2">
+              <i class="fa fa-spin fa-spinner"></i> Loading Priorities...
+            </div>
+          </ng-template>
