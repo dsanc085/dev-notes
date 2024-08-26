@@ -1,0 +1,3 @@
+To list current installed node versions: nvm ls
+
+To use a node version: nvm use <version>
