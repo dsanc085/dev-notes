@@ -1,1 +1,8 @@
 For mat-forms, you can use <textarea matInput></textarea>
+
+cdkTextareaAutosize
+                    [cdkAutosizeMaxRows]=10 [cdkAutosizeMinRows]=5
+
+<textarea cdkTextareaAutosize
+                    [cdkAutosizeMaxRows]=10 [cdkAutosizeMinRows]=5
+                    formControlName="description" matInput title="Description" aria-label="Description"></textarea>
