@@ -1,0 +1,3 @@
+        <button (click)="this.clickedReset()" title="Reset" rbr-soft-button [disabled]="this.restCallInProgress">
+          Reset
+        </button>
