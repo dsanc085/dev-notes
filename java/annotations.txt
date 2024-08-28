@@ -3,3 +3,7 @@ Metadata in Java - can be custom and some are predefined
 In Spring, there are various predefined ones such as:
 @RequestMapping
 @PreAuthorize
+
+@Resource - inject class
+
+@RequestBody - map data object from POST. See controller

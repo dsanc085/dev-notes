@@ -4,6 +4,8 @@ create new class <something>controller
 
 @RequestMapping - endpoint configuration
 
+@Resource - inject class
+
 Example:
 
 package com.lessons.controllers;
@@ -41,4 +43,17 @@ package com.lessons.controllers;
 					.status(HttpStatus.OK)
 					.body(listOfDTOs);
 		}
+
+        @Resource
+        private ReportService reportService;
+
+        @RequestMapping(value="/api/reports/add", method= RequestMethod.POST, produces="application/json")
+        @PreAuthorize("hasAnyRole('CVF_SUPERVISOR', 'CVF_SPECIALIST', 'CVF_ADMIN', 'CVF_REVIEWER')")
+        public ResponseEntity<?> addReport(@RequestBody AddReportDTO addReportDTO) {
+
+            this.reportService.addReport(addReportDTO);
+
+
+            return ResponseEntity.status(HttpStatus.OK).body("");
+        }
 	}
