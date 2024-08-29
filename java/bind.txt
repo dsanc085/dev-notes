@@ -1,0 +1,16 @@
+	Advantages of Bind Variables
+	----------------------------
+	1) Protection from sql-injection
+ 	2) Handles the apostrophes automatically:   O'Reilly case ----> gets converted to O''reilly
+	3) Performance boost of up to 10%
+
+
+	Types of Bind Variables in Spring-JDBC
+	--------------------------------------
+	A) JdbcTemplate uses ?
+			insert into reports(id, reportName)
+			values(?, ?)
+
+	B) NamedParameterJdbcTemplate uses  :id or :stuff
+			insert into reports(id, reportName)
+			values( :id,  :reportName )
