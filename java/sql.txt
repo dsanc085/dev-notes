@@ -1,0 +1,34 @@
+        String sql = """
+            insert into reports_authors (id, report_id, user_id)
+            values
+                """;
+
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("reportId", aNewReportId);
+
+        int i = 1;
+
+        for (Integer userId : aAuthors) {
+            String bindVariableName = "userId" + i;
+            sql += String.format("(nextval('seq_table_ids'), :reportId, :%s),", bindVariableName);
+
+            paramMap.put(bindVariableName, userId);
+            i++;
+        }
+
+        // Removing the last comma
+        sql = StringUtils.chop(sql);
+
+//        String sql = """
+//            insert into reports_authors (id, report_id, user_id)
+//            values (nextval('seq_table_ids'), :reportId, :userId)
+//                """;
+//
+//        Map<String, Object> paramMap = new HashMap<>();
+//        paramMap.put("reportId", aNewReportId);
+//
+//        for (Integer userId : aAuthors) {
+//            paramMap.put("userId", userId);
+//            aAuditManager.runSqlInsertOne(sql, paramMap, "reports_authors_aud");
+//        }
+

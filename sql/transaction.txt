@@ -1,0 +1,11 @@
+Multiple SQL statements run as one command
+
+        TransactionTemplate tt = new TransactionTemplate();
+        tt.setTransactionManager(new DataSourceTransactionManager(this.dataSource));
+
+        tt.setTimeout(Constants.SQL_TRANSACTION_TIMEOUT_SECS);
+
+        tt.execute(new TransactionCallbackWithoutResult() {
+
+
+        }
