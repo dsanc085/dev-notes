@@ -1,0 +1,77 @@
+1. Create new component - <dialog-name>
+2. In ts file for that new component, add:
+  public constructor(private dialogRef: MatDialogRef<AddReportDialogComponent>,
+                     private messageService: MessageService,
+                     private myReportService: MyReportService,
+                     @Inject(MAT_DIALOG_DATA) public data: AddReportDTO) {
+
+  }
+
+3. If you want to disable: this.dialogRef.disableClose = true;
+4.
+
+  public submitInProgress: boolean = false;
+  public cancelClicked(): void {
+    this.dialogRef.close(false);
+  }
+
+  public submitClicked(): void {
+    this.submitInProgress = true;
+
+    // Stop user from closing dialog box
+    this.dialogRef.disableClose = true;
+
+
+    let restCallFinishedSuccessfully: boolean = false;
+
+    this.myReportService.addReport(this.data).subscribe(()=> {
+      // Rest call finished successfully
+      this.messageService.showSuccessMessage("Report was successfully added");
+      restCallFinishedSuccessfully = true;
+      //this.clickedReset();
+    }).add(( ) => {
+      // Rest call finally block
+      //this.submitInProgress = false;
+      this.dialogRef.close(restCallFinishedSuccessfully);
+    })
+  }
+
+5. In original component:
+  public constructor(private formBuilder: FormBuilder,
+                     private reportAuthorService: ReportAuthorService,
+                     private matDialog: MatDialog,
+                     private validatorService: ValidatorService) {
+  }
+
+  public submitClicked(): void {
+    //this.restCallInProgress = true;
+    this.myForm.markAllAsTouched();
+
+    if (!this.myForm.valid) {
+      // There is a validation error so stop here
+      return;
+    }
+
+    let reportDTO: AddReportDTO = new AddReportDTO();
+
+    reportDTO.authors = this.myForm.controls.authors.value;
+    reportDTO.reportName = this.myForm.controls.reportName.value;
+    reportDTO.sourceId = this.myForm.controls.source.value;
+    reportDTO.priorityId = this.myForm.controls.priority.value;
+    reportDTO.classificationId = this.myForm.controls.classification.value;
+    reportDTO.description = this.myForm.controls.description.value;
+
+
+    let dialogRef: MatDialogRef<AddReportDialogComponent> = this.matDialog.open(AddReportDialogComponent, {
+      minWidth: '600px',
+      data: reportDTO
+    });
+
+    dialogRef.afterClosed().subscribe( (aOperationFinishedSuccessfully: boolean) => {
+      // Dialog block has closed
+      if (aOperationFinishedSuccessfully) {
+        this.clickedReset();
+      }
+    })
+
+  }
