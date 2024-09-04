@@ -36,3 +36,5 @@
 			return priorities;
 		}
 	}
+
+https://docs.google.com/document/d/1Zp0f3wS5gMPcDnY2vGJfwKX-LCjZkfDAGzA1Qa01B-U/edit

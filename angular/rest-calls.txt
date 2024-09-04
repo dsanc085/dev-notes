@@ -8,3 +8,61 @@ In TypeScript:
             // Return an observable that (when invoked) returns an array of LookupDataDTO objects
             return this.httpClient.get <LookupDataDTO[]> (restUrl);
 		  }
+
+In Model:
+export class ReportAuthorDTO {
+  public fullName: string;
+  public id: number;
+}
+
+Make sure name matches @JsonProperty("id") in Java backend
+
+In Service:
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ReportAuthorService {
+
+  constructor(private httpClient: HttpClient) { }
+
+  public getReportAuthors(): Observable<ReportAuthorDTO[]> {
+    const restUrl: string = environment.baseUrl + '/api/lookup/report-authors';
+
+    return this.httpClient.get <ReportAuthorDTO[]> (restUrl);
+  }
+}
+
+
+In Page Component:
+  public obsReportAuthors: Observable<ReportAuthorDTO[]>;
+
+  public ngOnInit(): void {
+    this.obsReportAuthors = this.reportAuthorService.getReportAuthors();
+
+    this.myForm = this.formBuilder.group({
+      reportName: [null,null],
+      source: [null,null],
+      priority: [null,null],
+      classification: [null,null],
+      authors: [null,null],
+      description: [null, [ this.validatorService.whiteSpaceValidator(), Validators.minLength(5)]],
+    });
+    }
+
+In Page HTML:
+      <mat-form-field subscriptSizing=dynamic class="w-full">
+        <mat-label>Authors</mat-label>
+
+
+          <mat-select formControlName="authors" title="Authors Dropdown" aria-label="Authors Dropdown" multiple >
+            <ng-container *ngIf="(this.obsReportAuthors | async) as reportAuthors">
+            <ng-container *ngFor="let dto of reportAuthors">
+              <mat-option [value]="dto.id">{{dto.fullName}}</mat-option>
+            </ng-container>
+            </ng-container>
+          </mat-select>
+
+
+
+      </mat-form-field>
