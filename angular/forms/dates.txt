@@ -1,0 +1,69 @@
+      <mat-form-field subscriptSizing="dynamic">
+        <mat-label>Contract Funding Date</mat-label>
+          <input matInput type="text" [matDatepicker]="contractFundingDate" formControlName="contractFundingDate" title="Contract Funding Date" aria-label="Contract Funding Date"/>
+
+          <mat-datepicker-toggle matIconSuffix [for]="contractFundingDate"></mat-datepicker-toggle>
+
+          <mat-datepicker #contractFundingDate></mat-datepicker>
+      </mat-form-field>
+
+        <mat-form-field class="w-full" subscriptSizing="dynamic">
+          <mat-label>Contract Date Range</mat-label>
+          <mat-date-range-input [rangePicker]="contractDateRange" [min]="this.minContractStartDate">
+            <input matStartDate type="text" placeholder="Start Date" formControlName="contractStartDate" title="Contract Start Date" aria-label="Contract Start Date"/>
+            <input matEndDate type="text" placeholder="End Date" formControlName="contractEndDate" title="Contract End Date" aria-label="Contract End Date"/>
+          </mat-date-range-input>
+          <mat-datepicker-toggle matIconSuffix [for]="contractDateRange"></mat-datepicker-toggle>
+
+          <mat-date-range-picker #contractDateRange></mat-date-range-picker>
+
+
+
+          <mat-error *ngIf="this.myForm.controls.contractStartDate.errors?.matDatepickerMin && this.myForm.controls.contractStartDate.touched">
+            Contract start date must be today or in the future
+          </mat-error>
+
+          <mat-error *ngIf="this.myForm.controls.contractEndDate.errors?.matEndDateInvalid && this.myForm.controls.contractEndDate.touched">
+            Contract end date must be after the start date
+          </mat-error>
+        </mat-form-field>
+
+  public clickLoadDefaults(): void {
+    this.myForm.controls.contractPriority.setValue(102);
+
+    this.myForm.controls.contractFundingDate.setValue(this.getFirstDateOfPrevMonth());
+
+    this.myForm.controls.contractStartDate.setValue(this.getTomorrow());
+
+    this.myForm.controls.contractEndDate.setValue(this.getOneYearFromNow());
+  }
+
+
+  private getFirstDateOfPrevMonth(): Date {
+    let now: Date = new Date();
+
+    // Get first day of previous month
+    let firstDatePrevMonth: Date = new Date(now.getFullYear(), now.getMonth()-1, 1);
+
+    return firstDatePrevMonth;
+  }
+
+  private getTomorrow(): Date {
+    let now: Date = new Date();
+
+    // Get tomorrow's date
+    let tomorrowDate: Date = new Date();
+    tomorrowDate.setDate(now.getDate() + 1);
+
+    return tomorrowDate;
+  }
+
+  private getOneYearFromNow(): Date {
+    let now: Date = new Date();
+
+    // Get contract default date
+    let oneYearDate: Date = new Date();
+    oneYearDate.setDate(now.getDate() + 366);
+
+    return oneYearDate;
+  }

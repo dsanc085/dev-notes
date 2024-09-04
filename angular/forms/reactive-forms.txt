@@ -25,3 +25,37 @@ TS File:
     b. Text Box: <input type="text" matInput />
 6. To reset form, in ts file:
     a. this.myForm.reset();
+7. To access form fields:
+this.myForm.controls.contractPriority.setValue(102);
+<pre>
+  contractName: {{this.myForm.controls.contractName.value}}
+  contractPriority: {{this.myForm.controls.contractPriority.value}}
+  contractFundingDate: {{this.myForm.controls.contractFundingDate.value}}
+  contractStartDate: {{this.myForm.controls.contractStartDate.value}}
+  contractStartDateErrors: {{this.myForm.controls.contractStartDate.errors | json}}
+  contractEndDate: {{this.myForm.controls.contractEndDate.value}}
+  contractEndDateErrors: {{this.myForm.controls.contractEndDate.errors | json}}
+</pre>
+8. Form validation:
+ this.myForm.markAllAsTouched();
+
+   public constructor(private formBuilder: FormBuilder,
+                      private messageService: MessageService) {
+
+   }
+   public clickSave(): void {
+
+     // Touching all forms to show any errors
+     this.myForm.markAllAsTouched();
+
+     if (!this.myForm.valid) {
+       // There are errors in form so let the user know
+       return;
+     }
+
+     this.messageService.showSuccessMessage("Contract Successfully Added");
+
+     this.myForm.reset();
+
+   }
+

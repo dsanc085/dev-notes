@@ -1,0 +1,8 @@
+RBR:
+
+  public constructor(private formBuilder: FormBuilder,
+                     private messageService: MessageService) {
+
+  }
+
+    this.messageService.showSuccessMessage("Contract Successfully Added");
