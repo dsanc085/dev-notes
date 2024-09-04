@@ -44,3 +44,13 @@ Custom Validation in directive: https://angular.dev/guide/forms/form-validation
 
     }
   } // end of isNumericValidator
+
+      this.myForm = this.formBuilder.group({
+        reportName: [null,null],
+        source: [null,null],
+        priority: [null,null],
+        classification: [null,null],
+        authors: [null,null],
+        description: [null, [ this.validatorService.whiteSpaceValidator(), Validators.minLength(5)]],
+      });
+      }
