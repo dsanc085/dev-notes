@@ -19,3 +19,23 @@ Use of to convert a data type to observable:
     return of(contractSizes).pipe(delay(5000));
   }
 }
+
+Piping and loading before html:
+
+    this.contractSpecObs = this.contractSpecService.getEditContractSpecInfo().pipe(tap((aData: MyEditContractSpecDTO) => {
+      this.myForm.controls.contractName.setValue(aData.contractName);
+      this.myForm.controls.priority.setValue(aData.priorityId);
+
+      this.myForm.controls.extraDays.setValue(aData.extraDays);
+
+      let tempDate: Date = new Date(aData.contractSpecExecutionDate);
+
+      // Strip off last character
+      this.startDate = new Date(tempDate.toISOString().slice(0,-1));
+      this.myForm.controls.contractSpecExecutionDate.setValue(this.startDate);
+
+    }));
+
+    HTML:
+    wrap entire form with ngcontainer:
+    <ng-container *ngIf="(this.contractSpecObs | async)">
