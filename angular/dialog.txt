@@ -75,3 +75,12 @@
     })
 
   }
+
+
+  To reference dialog:
+    public constructor(private formBuilder: FormBuilder,
+                       private matDialog: MatDialog) {
+
+    }
+
+    this.matDialog.open(ConfirmSubmitContractSpecDialogComponent);
