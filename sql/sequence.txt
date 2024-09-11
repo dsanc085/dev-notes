@@ -1,1 +1,5 @@
 nextval('seq_table_ids')
+
+Use databaseService:
+
+databaseService:getNextId();
