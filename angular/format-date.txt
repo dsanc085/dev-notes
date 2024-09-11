@@ -1,0 +1,10 @@
+  Inject Locale ID
+
+  public constructor(private formBuilder: FormBuilder,
+                     private matDialog: MatDialog,
+                     @Inject(LOCALE_ID) private locale: string) {
+
+Use formatDate
+formattedExecutionDate = formatDate(this.myForm.controls.contractSpecExecutionDate.value, 'MM/dd/yyyy', this.locale);
+
+

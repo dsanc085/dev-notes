@@ -66,3 +66,68 @@ In Page HTML:
 
 
       </mat-form-field>
+
+Post Example:
+
+import { Injectable } from '@angular/core';
+import {HttpClient} from "@angular/common/http";
+import {Observable} from "rxjs";
+import {GetReportCommentDetailsDto} from "../models/get-report-comment-details-dto";
+import {environment} from "../../environments/environment";
+import {GetReportCommentDTO} from "../models/details-page/get-report-comment-dto";
+import {AddReportCommentDTO} from "../models/details-page/add-report-comment-dto";
+import {UpdateReportCommentDTO} from "../models/details-page/update-report-comment-d-t-o";
+import {GetReportCommentReadOnlyDetailsDto} from "../models/details-page/get-report-comment-read-only-details-dto";
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ReportCommentService {
+
+  constructor(private httpClient: HttpClient) { }
+
+  public getReportCommentDetails(aReportCommentId: number): Observable<GetReportCommentDetailsDto> {
+    const restUrl: string = environment.baseUrl + '/api/report-comments/details/' + aReportCommentId;
+
+    return this.httpClient.get <GetReportCommentDetailsDto> (restUrl);
+  }
+
+  public getReportCommentReadOnlyDetails(aReportCommentId: number): Observable<GetReportCommentReadOnlyDetailsDto> {
+    const restUrl: string = environment.baseUrl + '/api/report-comments/read-only/details/' + aReportCommentId;
+
+    return this.httpClient.get <GetReportCommentReadOnlyDetailsDto> (restUrl);
+  }
+
+  public getReportComments(aCaseId: number): Observable<GetReportCommentDTO[]> {
+    // Construct the URL to get the data to load all the Report Comments for a specific case ID
+    const restUrl = environment.baseUrl + '/api/report-comments/get-reports/' + aCaseId;
+
+    // Return an observable that will hold a list of Notes Objects
+    return this.httpClient.get <GetReportCommentDTO[]>(restUrl);
+  }
+
+  public addReportComment(aAddReportCommentDTO: AddReportCommentDTO): Observable<void> {
+    // Construct the URL to get the data to load all the Report Comments for a specific case ID
+    const restUrl = environment.baseUrl + '/api/report-comments/add';
+
+    // Return an observable that will hold a list of Notes Objects
+    return this.httpClient.post <void> (restUrl, aAddReportCommentDTO);
+  }
+
+  public deleteReportComment(reportCommentId: number): Observable<string> {
+    // Construct the URL to get the data to load the Report Comment
+    const restUrl = environment.baseUrl + '/api/report-comments/delete/' + reportCommentId;
+
+    // Return an observable that will hold a list of NoteSectionDTO objects
+    return this.httpClient.delete<string>(restUrl);
+  }
+
+  public updateReportComment(aUpdateReportCommentDTO: UpdateReportCommentDTO): Observable<string> {
+    // Construct the URL to get the data to load the Report Comment
+    const restUrl = environment.baseUrl + '/api/report-comments/update'
+
+    // Return an observable that will hold a list of UpdateAnnouncementDTO objects
+    return this.httpClient.post <string>(restUrl, aUpdateReportCommentDTO);
+  }
+
+}
