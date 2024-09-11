@@ -38,3 +38,53 @@
 	}
 
 https://docs.google.com/document/d/1Zp0f3wS5gMPcDnY2vGJfwKX-LCjZkfDAGzA1Qa01B-U/edit
+
+
+package com.lessons.services;
+
+import com.common.utilities.AuditManager;
+import com.lessons.models.AddContractSpecDTO;
+import jakarta.annotation.Resource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.Map;
+
+@Service
+public class ContractSpecService {
+    private static final Logger logger = LoggerFactory.getLogger(ContractSpecService.class);
+
+    @Resource
+    private DatabaseService databaseService;
+
+    @Resource
+    private DataSource dataSource;
+
+    @Resource
+    private UserService userService;
+
+    public void addContractSpec(AddContractSpecDTO contractSpecDTO) {
+        logger.debug("Adding contract spec data");
+
+        AuditManager auditManager = new AuditManager(dataSource, userService.getLoggedInUserName(), databaseService.getMapTableNameToCsvOfColumns());
+
+        String sql = """
+                    insert into contract_specs (id, name, priority_id, execution_date, extra_days)
+                    values (:id, :name, :priority, to_date(:executionDate, 'MM/DD/YYYY'), :extraDays)
+                    """;
+
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("id", databaseService.getNextTableId());
+        paramMap.put("name", contractSpecDTO.getName());
+        paramMap.put("priority", contractSpecDTO.getPriorityId());
+        paramMap.put("executionDate", contractSpecDTO.getExecutionDate());
+        paramMap.put("extraDays", contractSpecDTO.getExtraDays());
+
+        // Execute the sql to insert the record and add audit record
+        auditManager.runSqlInsertOne(sql, paramMap, "contract_specs_aud");
+
+    }
+}

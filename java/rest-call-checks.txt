@@ -1,0 +1,40 @@
+Use StringUtils:
+
+    @RequestMapping(value="/api/contract-specs/add",method= RequestMethod.POST, produces="application/json")
+    @PreAuthorize("hasAnyRole('CVF_SUPERVISOR', 'CVF_SPECIALIST', 'CVF_ADMIN', 'CVF_REVIEWER')")
+    public ResponseEntity<?> addContractSpec(@RequestBody AddContractSpecDTO aDTO) {
+        if (StringUtils.isBlank(aDTO.getName())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .body("Contract Name cannot be blank");
+        }
+
+        if ( (aDTO.getPriorityId() == null) ||
+                ((aDTO.getPriorityId() < 101) || (aDTO.getPriorityId() > 103))) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .body("Priority ID is not valid");
+        }
+
+        if (StringUtils.isBlank(aDTO.getExecutionDate()) ||
+                (aDTO.getExecutionDate().length() != 10) ||
+                (!DateUtilities.isDateValid(aDTO.getExecutionDate()))
+        ) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .body("Execution Date is not valid");
+        }
+
+        if ( (aDTO.getExtraDays() == null) ||
+                (aDTO.getExtraDays() < 0) ||
+                (aDTO.getExtraDays() > 365)
+        ) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .body("Extra Days is not valid");
+        }
+
+        contractSpecService.addContractSpec(aDTO);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }

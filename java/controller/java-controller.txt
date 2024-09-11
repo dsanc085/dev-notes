@@ -54,6 +54,74 @@ package com.lessons.controllers;
             this.reportService.addReport(addReportDTO);
 
 
-            return ResponseEntity.status(HttpStatus.OK).body("");
+            return ResponseEntity.status(HttpStatus.OK).body(""); or .build();
         }
 	}
+
+	Another example:
+
+package com.lessons.controllers;
+
+import com.lessons.models.AddContractSpecDTO;
+import com.lessons.services.ContractSpecService;
+import com.lessons.utilities.DateUtilities;
+import com.ning.http.client.Response;
+import jakarta.annotation.Resource;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+@Controller
+public class ContractSpecController {
+    private static final Logger logger = LoggerFactory.getLogger(ContractSpecController.class);
+
+    @Resource
+    private ContractSpecService contractSpecService;
+
+    @RequestMapping(value="/api/contract-specs/add",method= RequestMethod.POST, produces="application/json")
+    @PreAuthorize("hasAnyRole('CVF_SUPERVISOR', 'CVF_SPECIALIST', 'CVF_ADMIN', 'CVF_REVIEWER')")
+    public ResponseEntity<?> addContractSpec(@RequestBody AddContractSpecDTO aDTO) {
+        if (StringUtils.isBlank(aDTO.getName())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .body("Contract Name cannot be blank");
+        }
+
+        if ( (aDTO.getPriorityId() == null) ||
+                ((aDTO.getPriorityId() < 101) || (aDTO.getPriorityId() > 103))) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .body("Priority ID is not valid");
+        }
+
+        if (StringUtils.isBlank(aDTO.getExecutionDate()) ||
+                (aDTO.getExecutionDate().length() != 10) ||
+                (!DateUtilities.isDateValid(aDTO.getExecutionDate()))
+        ) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .body("Execution Date is not valid");
+        }
+
+        if ( (aDTO.getExtraDays() == null) ||
+                (aDTO.getExtraDays() < 0) ||
+                (aDTO.getExtraDays() > 365)
+        ) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .body("Extra Days is not valid");
+        }
+
+        contractSpecService.addContractSpec(aDTO);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+}

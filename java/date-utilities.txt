@@ -1,0 +1,61 @@
+Add this the utilities:
+
+package com.lessons.utilities;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
+import java.util.Locale;
+
+public class DateUtilities {
+    private static final Logger logger = LoggerFactory.getLogger(DateUtilities.class);
+
+
+    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/uuuu", Locale.US)
+            .withResolverStyle(ResolverStyle.STRICT);
+
+
+    public static boolean isDateValid(String aRawDateAsString) {
+        try {
+            // Attempt to parse the date
+            LocalDate.parse(aRawDateAsString, dateFormatter);
+
+        } catch (DateTimeParseException e) {
+            // Date parsing failed.  This date is invalid
+            return false;
+        }
+
+        // Date parsing succeeded.  This date is invalid
+        return true;
+    }
+
+
+
+    public static boolean isDate2AfterDate1(String aRawDate1, String aRawDate2) {
+        try {
+            // Attempt to parse the date
+            LocalDate localDate1 = LocalDate.parse(aRawDate1, dateFormatter);
+
+            LocalDate localDate2 = LocalDate.parse(aRawDate2, dateFormatter);
+
+            if (localDate1.isAfter(localDate2)) {
+                // Date 1 is *AFTER* date 2.  This is bad.  So, return false
+                return false;
+            }
+            else {
+                // Date 1 is *BEFORE* date 2. So, return true
+                return true;
+            }
+
+        } catch (DateTimeParseException e) {
+            // Date parsing failed.  This date is invalid
+            return false;
+        }
+
+    }  // end of isDate2AfterDate1()
+
+}
