@@ -7,3 +7,7 @@ In Spring, there are various predefined ones such as:
 @Resource - inject class
 
 @RequestBody - map data object from POST. See controller
+
+@Value - get value from yaml file
+
+@PostConstruct - function that is called after class is finished

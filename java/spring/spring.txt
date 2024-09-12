@@ -1,0 +1,231 @@
+
+	Why are we using Spring on the backend?
+	---------------------------------------
+	We can reuse code
+	Spring is OLD / it came out around 2000 / There are classes that have been proven
+
+
+	What advantages does Spring give us?
+	------------------------------------
+	 A) Dependency Injection --> Makes it easy to share **ADVANCED** services
+
+	 B) It is a family of packages
+		Spring-JDBC		/ makes it easy to execute SQL / JdbcTemplate / NamedParameterJdbcTemplate
+
+		Spring-Web		/ Provides your @Controller annotation and turns your class into REST endpoints
+
+		Spring-Security / Protect the REST endpoints by ensuring that users have certain ROLES before we execute the controller code
+
+		Spring-Core     / Provides dependency injection / Your @Resources annotation
+
+		Spring-Boot		/ Provides the application-server and makes it easy to debug / makes for better deployments
+						  Undertow
+						  Tomcat
+
+
+	 C) Gives us everything we need to make a secure/robust backend
+
+	 D) It's popular / lots of java developers know it and use it
+
+
+
+
+
+				Tomcat 					Free
+				Jetty					Free
+				IBM Websphere      	   	  $$$
+				BEA WebLogic Server		  $$$
+				Oracle Application Server  $$
+
+
+
+			Old Way / Circa < 2017
+			+-------------------+       +----------------+
+			|	Tomcat 8443     |       | Intellij
+			|   /webapp1        |       |   Java Code
+			|   /webapp2        |       |
+            +-------------------+       +---------------
+
+
+
+			**ONE PROCESS**
+			+-------------------+
+			|
+			| Spring Boot / App Server / listen on 8444 / HUGE AMOUNTS OF RESOURCES
+			| Java Code
+			| Controllers
+			| Services
+			+--------------------
+
+					java -jar ./my-big.jar
+
+
+			+-------------------------------
+			| Undertow Application Server
+			+--------------------------------
+			| Java libraries
+			| Compiled Java Code
+			+--------------------------------
+			| Frontend javascript libraries
+			| Frontend HTML/JS/CSS
+			+--------------------------------
+
+
+
+
+
+	@JsonProperties does something for us
+
+	It wasn't as hard to set everything up / increases developer's productivity / Able to integrate with other frameworks
+
+
+
+
+
+		@Controller
+		public class ContractSpecController {
+
+
+			@Resource
+			private ContractSpecService contractSpecService;
+
+		}
+
+
+		-- This holds the starting point for the REST calls
+		-- This class DEPENDS ON ContractSpecService to do its job / somewhere it's going to call
+
+						this.contractSpecService.addContract(dto);
+
+
+				@Service
+				ContractSpecService class
+					-- This class DEPENDS on having a DataSource in order to execute SQL	/ We need this to execute SQL
+					-- This class DEPENDS on the DatabaseService class						/ We need this to get a method that will generate a unique id
+					-- This class DEPENDS on the UserService.class							/ we need this to get the logged-in username
+
+
+
+
+
+			ContractSpecController   (4)
+				--> ContractSpecService   (3)
+						--> DataSource
+						--> DatabaseService  (2)
+							--> DataSource
+
+						--> UserService
+							--> DataSource   (1)
+
+
+
+
+
+
+
+
+			ContractSpecService myService = new ContractSpecService( dataSource, databaseService, userService)
+
+
+
+			ContractSpecController myController = new ContractSpecController(contractSpecService)
+
+
+
+	Order of Operations when you run a Java JAR
+	-------------------------------------------
+	1. main() is called on a certain class
+
+	2. We startup Spring Framework
+		a. Looks for classes that start with @Service, @Controller, or @ControllerAdvice
+
+		b. Builds a tree of dependencies
+
+		c. Starts from the bottom, working its way up
+			1) Instantiating objects
+				--> Constructor is called
+
+			2) Injecting dependencies
+
+			3) Post contructor is called
+				--> init is called
+
+
+			IF THERE ARE ANY PROBLEMS BUILDING THESE DEPENDENCIES --> Spring blows up
+			  AND YOUR WEB APPLICATION DOES NOT START UP
+
+
+
+
+											Spring
+										Application Context
+					+---------------------------------------------------------+
+					|                                                         |
+					|   instance of ContractSpecService                       |
+					|                                                         |
+					|   instance of UserService                               |
+					|                                                         |
+					|   instance of DataSource                                |
+					|                                                         |
+					|   instance of DatabaseService                           |
+					|
+					|   instance of ContractSpecController
+					|
+					|   instance of MyService
+					|
+                    | If any runtime exceptions are thrown --> call MyExceptionHandler.handleException()
+					+--------------------------------------------------------------------------------------
+
+													main()
+
+
+
+
+					@Bean
+
+
+					@ControllerAdvice
+
+
+
+					@Controller
+
+
+
+					@Service
+					public class MyService {
+
+							@Resource
+							private UserService userService;
+
+							@Resource
+							private DataSource dataSource;
+
+
+							public doSomething() {
+								Integer loggedInUserid = userService.getLoggedInUserid();
+								...
+
+								String sql = "select now()";
+
+								// Use Spring-JDBC
+								JdbcTemplate jt = new JdbcTemplate(this.dataSource);
+
+								String currentDateTime = jt.queryForObject(sql, String.class);
+
+							}
+					}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
