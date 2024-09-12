@@ -1,0 +1,11 @@
+After subscribe, call add:
+
+    this.contractSpecService.addContractSpec(this.data).subscribe( () => {
+        // Rest call finished successfully
+      this.messageService.showSuccessMessage("Report Specification was successfully submitted");
+      restCallFinishedSuccessfully = true;
+
+    }).add( () => {
+        // Rest call finally block - called when finished, success or failure
+        this.dialogRef.close(restCallFinishedSuccessfully);
+    });
