@@ -2,9 +2,17 @@ Under src/main/java/com/<artifact>>/controller
 
 create new class <something>controller
 
+Make sure to add @Controller annotation to class
+
+Add logger
+
+Inject Service
+
 @RequestMapping - endpoint configuration
 
 @Resource - inject class
+
+
 
 Example:
 
