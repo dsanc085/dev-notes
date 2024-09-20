@@ -9,6 +9,153 @@ add this to the componenet.ts file:
 
   }
 
+Examples:
+POST:
+import { Injectable } from '@angular/core';
+import {delay, Observable, of} from "rxjs";
+import {HttpClient} from "@angular/common/http";
+import {AddReportDTO} from "../models/add-report-dto";
+import {environment} from "../../environments/environment";
+
+@Injectable({
+  providedIn: 'root'
+})
+export class MyReportService {
+
+  constructor(private httpClient: HttpClient) { }
+
+  public addReport(reportDTO: AddReportDTO): Observable<string> {
+    const restUrl: string = environment.baseUrl + "/api/reports/add";
+
+    return this.httpClient.post <string>(restUrl, reportDTO).pipe(delay(5000));
+  }
+}
+
+Get:
+
+import { Injectable } from '@angular/core';
+import {HttpClient} from "@angular/common/http";
+import {ReportAuthorDTO} from "../models/report-author-dto";
+import {Observable} from "rxjs";
+import {environment} from "../../environments/environment";
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ReportAuthorService {
+
+  constructor(private httpClient: HttpClient) { }
+
+  public getReportAuthors(): Observable<ReportAuthorDTO[]> {
+    const restUrl: string = environment.baseUrl + '/api/lookup/report-authors';
+
+    return this.httpClient.get <ReportAuthorDTO[]> (restUrl);
+  }
+}
+
+
+
+
+
+
+
+import { Injectable } from '@angular/core';
+import {delay, Observable, of, shareReplay} from "rxjs";
+import {MyLookupDTO} from "../models/my-lookup-dto";
+import {environment} from "../../environments/environment";
+import {HttpClient} from "@angular/common/http";
+import {MyStateDTO} from "../models/my-state-dto";
+
+@Injectable({
+  providedIn: 'root'
+})
+export class MyLookupService {
+  private cache: any = {};
+  private readonly  USA_STATES_KEY: string = "u";
+
+  constructor(private httpClient: HttpClient) { }
+
+
+
+  public getAllPriorities(): Observable<MyLookupDTO[]> {
+    // Construct URL for rest call
+    const restUrl: string = environment.baseUrl + '/api/lookup/my-priorities';
+
+    return this.httpClient.get <MyLookupDTO[]> (restUrl);
+  }
+
+  public getAllContractSizes(): Observable<MyLookupDTO[]> {
+    let contractSizes: MyLookupDTO[] = [
+      {
+        id : 21,
+        value : "Fake Small (under $1m)"
+      },
+      {
+        id: 22,
+        value: "Fake Medium (under $50m)"
+      }
+    ];
+
+    return of(contractSizes).pipe(delay(5000));
+  }
+
+  public getOrderActions(): Observable<MyLookupDTO[]> {
+    let orderActions: MyLookupDTO[] = [
+      {
+        id : 11,
+        value : "Fake Buy Shares"
+      },
+      {
+        id : 12,
+        value : "Buy Mutual Funds"
+      },
+      {
+        id : 13,
+        value : "Sell Shares"
+      },
+      {
+        id : 14,
+        value : "Sell Mutual Funds"
+      }
+    ];
+
+    return of(orderActions);
+  }
+
+  public getOrderTypes(): Observable<MyLookupDTO[]> {
+    let orderTypes: MyLookupDTO[] = [
+      {
+        id : 201,
+        value : "Fake Market Order"
+      },
+      {
+        id : 202,
+        value : "Limit Order"
+      }
+    ];
+
+    return of(orderTypes);
+  }
+
+  public getAllUsaStates(): Observable<MyStateDTO[]> {
+    const cacheKey: string = this.USA_STATES_KEY;
+
+    if (this.cache[cacheKey]) {
+      // observable in cache, return from cache
+      return this.cache[cacheKey];
+    }
+
+    const restURL: string = environment.baseUrl + "/api/my-lookup/usa-states";
+
+    // put observable into cache
+    this.cache[cacheKey] =  this.httpClient.get <MyStateDTO[]> (restURL).pipe(
+      shareReplay(1)
+    );
+    return this.cache[cacheKey];
+  }
+}
+
+
 
 
 
