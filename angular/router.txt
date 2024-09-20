@@ -1,0 +1,5 @@
+1. Inject Router
+2. Use router.navigate to go to another page
+3. Use Constants.<name>
+import {Constants} from "../utilities/constants";
+this.router.navigate([Constants.MY_REGISTRATION_PENDING_VER]).then();

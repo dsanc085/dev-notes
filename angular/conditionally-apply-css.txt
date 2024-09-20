@@ -1,0 +1,3 @@
+[ngClass]="{
+'not-clickable' : this.submitInProgress
+'clickable' : this.submitInProgress == false}"
