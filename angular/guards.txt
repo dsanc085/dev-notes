@@ -1,0 +1,102 @@
+What is an Angular Guard?
+-------------------------
+ 1) It's a bunch of interfaces
+	-- We create methods that implement these interfaces
+
+			canActivate(): boolean | Observable<boolean>			// Is the router allowed to open the requested page?
+
+			canDeactivate(): boolean | Observable<boolean>			// Is the router allowed to leave the current page?
+
+
+
+ 2) Who is running this code?
+	-- The router runs the code
+	-- The router looks at the results
+
+	-- If canActivate() returns TRUE, the router will open the page
+	-- If canActivate() returns FALSe, the router will NOT open the page
+	-- If canActivate() returns Observable<boolean>,
+			The router will subscribe
+			If the observable ultimately returns TRUe, then at some point, the router opens the page
+
+
+ 3) How do we generate a guard?
+	ng generate guard <guard name> --implements canActivate
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Example:
+
+import {ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot} from '@angular/router';
+import {inject, Injectable} from "@angular/core";
+import {UserService} from "../services/user.service";
+import {Observable, of, switchMap} from 'rxjs';
+import {UserRegistrationInfoDTO} from "../models/user-registration-info-dto";
+import {Constants} from "../utilities/constants";
+
+export namespace StopUserFromRegisteringAgainGuard {
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  class InternalPageGuardService {
+    constructor(private router: Router,
+                private userService: UserService) { }
+
+    // public canActivate(aActivateRouteSnapshot: ActivatedRouteSnapshot): Observable<boolean> {
+    //   this.userService.getUserRegistrationInfo().subscribe((userRegistrationInfoDTO: UserRegistrationInfoDTO) => {
+    //     if (userRegistrationInfoDTO.registrationState == 1) {
+    //       // User not registered so let user open page
+    //       return true;
+    //     }
+    //     if (userRegistrationInfoDTO.registrationState == 2) {
+    //       // Don't let user open this page
+    //       this.router.navigate([Constants.MY_REGISTRATION_PENDING_VER]).then();
+    //       return false;
+    //     }
+    //     // don't let user open this page
+    //     return false;
+    //   });
+
+
+    public canActivate(aActivateRouteSnapshot: ActivatedRouteSnapshot): Observable<boolean> {
+        return this.userService.getUserRegistrationInfo().pipe(
+          switchMap( (userRegistrationInfoDTO: UserRegistrationInfoDTO) => {
+          if (userRegistrationInfoDTO.registrationState == 1) {
+            // User not registered so let user open page
+            return of(true);
+          }
+          if (userRegistrationInfoDTO.registrationState == 2) {
+            // Don't let user open this page
+            this.router.navigate([Constants.MY_REGISTRATION_PENDING_VER]).then();
+            return of(false);
+          }
+          // don't let user open this page
+          return of(false);
+        }));
+      }
+    }
+  export const canActivate: CanActivateFn = (aActivateRouteSnapshot: ActivatedRouteSnapshot,
+                                             aRouterState: RouterStateSnapshot) => {
+    return inject(InternalPageGuardService).canActivate(aActivateRouteSnapshot);
+  }
+
+
+
+
+}
+
+In app.module.ts:
+  { path:  Constants.MY_REGISTER_USER,                            component: MyRegisterUserComponent ,                   canActivate: [ PageGuard.canActivate, StopUserFromRegisteringAgainGuard.canActivate ]},
+
