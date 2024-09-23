@@ -1,0 +1,7 @@
+Use @HostListener to listen for specific events or key presses:
+
+  @HostListener('document:keydown.escape', ['$event'])
+  public keyDownHandler() {
+    //Escape key is pressed
+    this.closeHelp();
+  }

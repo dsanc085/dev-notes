@@ -24,3 +24,8 @@
               <i class="fa fa-spin fa-spinner"></i> Loading Priorities...
             </div>
           </ng-template>
+
+
+
+
+          fa-spin
