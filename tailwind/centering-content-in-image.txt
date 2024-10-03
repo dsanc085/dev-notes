@@ -1,0 +1,26 @@
+<div class="relative">
+<div class="absolute">
+
+
+<div class="flex flex-col w-full">
+  <div class="flex mt-5">
+    <div class="flex flex-row w-full place-content-center relative">
+      <img class="w-1/2" src="./assets/images/landscape.png">
+      <div class="flex absolute w-full h-full items-center place-content-center top-0 left-0">
+        <button type="button" mat-raised-button>
+          Login Button
+        </button>
+      </div>
+    </div>
+    <div class="absolute ">
+
+    </div>
+  </div>
+  <div class="mt-5 flex place-content-center">
+    If you need helping logging-in
+  </div>
+  <div class="flex place-content-center mt-2.5">
+    Help Button
+  </div>
+</div>
+
