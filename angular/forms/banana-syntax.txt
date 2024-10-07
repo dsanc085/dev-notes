@@ -1,0 +1,7 @@
+Two Way Binding
+
+TS:
+public variableName: number =
+
+In html:
+<mat-select [(ngModel)]="this.<variableName>">
