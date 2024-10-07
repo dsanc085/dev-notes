@@ -1,7 +1,8 @@
 Two Way Binding
 
 TS:
-public variableName: number =
+public variableName: number = 1;
 
 In html:
 <mat-select [(ngModel)]="this.<variableName>">
+<mat-option [value]=1></mat-option>
