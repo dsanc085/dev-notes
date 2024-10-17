@@ -7,3 +7,5 @@
               }
     b. Use routerLink
         i. [routerLink]="<route>"
+
+    c. Empty link: [routerLink]=[]

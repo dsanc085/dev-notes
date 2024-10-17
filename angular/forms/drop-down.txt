@@ -11,3 +11,18 @@
           <mat-error>Action is Required</mat-error>
 
         </mat-form-field>
+
+
+
+                <mat-select placeholder=" Go to Report" class="!w-[150px] border-2 px-2.5" panelWidth="" #reportValue
+                            (selectionChange)="this.goToReport($event.value)">
+                  <mat-option [value]=1>Burndown Chart</mat-option>
+                  <mat-option [value]=2>Burnup Chart</mat-option>
+                  <mat-option [value]=3>Sprint Report</mat-option>
+                  <mat-option [value]=4>Velocity Report</mat-option>
+                  <mat-option [value]=5>Epic Report</mat-option>
+                  <mat-option [value]=6>Version Report</mat-option>
+                  <mat-option [value]=7>Control Chart</mat-option>
+                  <mat-option [value]=8>Time Tracking Report</mat-option>
+                  <mat-option [value]=9>Version Workload Report</mat-option>
+                </mat-select>
