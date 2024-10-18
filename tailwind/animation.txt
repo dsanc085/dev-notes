@@ -3,3 +3,11 @@ Use these classes:
 2. duration-300
 3. ease-in-out
 4. For hide: overflow-hidden and set margin, padding, width, to 0 as necesary
+
+.showAnimation {
+  @apply transition-all duration-300 ease-in-out;
+}
+
+.hideAnimation {
+  @apply transition-all duration-300 ease-in-out overflow-hidden m-0 p-0 w-0;
+}
