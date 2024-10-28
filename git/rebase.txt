@@ -1,0 +1,5 @@
+git checkout development
+git pull
+git checkout cc/3275
+git rebase --rebase-merges development
+git push --force

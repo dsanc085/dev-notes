@@ -1,0 +1,13 @@
+import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
+
+export class SmoothVerticalTransitionComponent implements AfterViewInit {
+
+  ngAfterViewInit(): void {
+    this.originalDivHeightInPixels = this.collapsableDiv.nativeElement.offsetHeight.toString() + "px";
+    this.collapsableDiv.nativeElement.style.height = this.originalDivHeightInPixels;
+
+    this.originalDivHeightInPixelsVOO = this.collapsableDiv2.nativeElement.offsetHeight.toString() + "px";
+    this.collapsableDiv2.nativeElement.style.height = this.originalDivHeightInPixelsVOO;
+  }
+
+}
