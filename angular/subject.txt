@@ -35,3 +35,34 @@ export class MyComponent {
     return this.messageSubject.asObservable();
   }
 }
+
+
+Real world:
+In Service:
+  private subReloadAcknowledgement: Subject<void> = new Subject<void>;
+
+    public listenForMessageToGetAcknowledgementStatus(): Observable<void> {
+      return this.subReloadAcknowledgement.asObservable();
+    }
+
+    public sendMessageToGetAcknowledgementStatus(): void {
+      this.subReloadAcknowledgement.next();
+    }
+
+In Component that needs to pass Subject to another component:
+  public acknowledgeClicked() {
+    this.acknowledgeSub = this.acknowledgementService.markUserAsAcknowledged().subscribe(() => {
+      // Rest call finished successfully
+      this.acknowledgementService.sendMessageToGetAcknowledgementStatus();
+    });
+  }
+
+
+In page that needs to receive Subject:
+    this.userAcknowledgedObs = this.acknowledgementService.getUserAcknowledged();
+
+    let subjectSub:Subscription = this.acknowledgementService.listenForMessageToGetAcknowledgementStatus().
+    subscribe(() => {
+      // Received Message to refresh the main page and reinitialize the variable so rest call is called again
+      this.userAcknowledgedObs = this.acknowledgementService.getUserAcknowledged();
+    });
