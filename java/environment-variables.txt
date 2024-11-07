@@ -1,0 +1,10 @@
+Yaml File:
+app.skip_acknowledgement: true
+
+
+Java:
+
+@Value("${app.skip_acknowledgement:false}")
+private boolean skipAcknowledgement;
+
+
