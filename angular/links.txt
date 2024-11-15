@@ -9,3 +9,7 @@
         i. [routerLink]="<route>"
 
     c. Empty link: [routerLink]=[]
+
+    d. [routerLink]="'/' + Constants.PAGE_ROUTE"
+
+    e. [routerLink]="/page/somewhere"
