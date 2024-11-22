@@ -1,0 +1,7 @@
+      <mat-menu #optionsMenu="matMenu">
+        <button (click)="this.resetLayout()" mat-menu-item title="Reset to Default Layout" aria-label="Reset to Default Layout">Reset to Default Layout</button>
+        <button (click)="this.toggleLeftSide()" mat-menu-item title="Toggle Left Side" aria-label="Toggle Left Side">Toggle Left Side</button>
+        <button (click)="this.toggleRightSide()" mat-menu-item title="Toggle Right Side" aria-label="Toggle Right Side">Toggle Right Side</button>
+      </mat-menu>
+
+      <button mat-raised-button [matMenuTriggerFor]="optionsMenu" title="" aria-label="">View Options</button>
