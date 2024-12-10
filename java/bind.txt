@@ -96,3 +96,150 @@ Example 2:
 
         aAuditManager.runSqlInsertMany(sql, paramMap, "reports_authors_aud");
     }
+
+
+
+
+
+  Why does Adam **LOVE** Bind Variables?
+  --------------------------------------
+	1. Keeps things isolated and clean
+	   -- Helps prevent SQL injection!!!!
+
+															+-----------------------------------------------------------
+															|
+															|                  Login ___whatever____________
+															|               Password ___secret' or 1=1____________
+															|                        <Login Btn>
+															+-----------------------------------------------------------
+
+
+																		select *
+																		from users
+																		where username='whatever' and password='secret' or 1=1
+
+
+
+	2. Slight Performance boost  (for frequently used SQL)
+		a. Your program generates SQL
+		b. Your program sends the SQL to the database
+		c. The database checks to see if the SQL is cached in the SPA
+			-- If it's cached, then run it
+
+			-- if it's not cached
+				 a) Calculate the fastest way to execute the SQL
+				 b) Run it
+
+
+
+					Program ------------SQL --------------- Database Server
+
+																	Shared Pool Area  (SPA)
+																		-- select from users u where u.id=27 | information as to how to execute as fast as possible
+																		-- select from users u where u.id=28 | information as to how to execute as fast as possible
+																		-- select from users u where u.id=29 | information as to how to execute as fast as possible
+																		-- select from users u where u.id=?
+																		-- insert....
+																		-- update
+
+
+	3. Don't forget O'reilly!!!
+	   -- Bind variables take care of the apostrophes for you
+
+
+			// THIS WILL BLOW-UP if your name has apostrophes in it!!
+			String sql = String.format(
+ 						"""
+						insert into junk_table(id, name)
+						values( %d , %s)
+						""", id, name);
+
+
+
+
+			insert into junk_table(id, name)
+			values(27, 'O\'reilly');
+
+
+			// This is good
+			String sql = """
+			insert into junk_table(id, name)
+			values( :id , :name)
+			"""
+
+
+
+
+
+   Two Types of Bind Variables used in Spring-JDBC
+   -----------------------------------------------
+	1. Question marks / used for SELECT statements / used when I have 3 or fewer
+
+				Integer id = 27;
+				String name= "Hi Mom!!!";
+
+				JdbcTemplate jt = new JdbcTemplate(this.dataSource);
+
+				String sql = "select id from users where id=? OR name=?";
+
+				SqlRowSet rs = jt.queryForRowSet(sql, id, name);
+
+				if (rs.next() ) {
+					Integer userid = rs.getInt("id");
+				}
+
+
+	2. Named bind variables / used with the Audit Manager / Used for inserts, updates, and deletes / Used for selects with 3 or more
+
+				Integer id = 27;
+				String name= "Hi Mom!!!";
+
+				String sql = "select id from users where account_id= :account_id   OR name= :name ";
+
+
+				Map<String, Object> paramMap = new Hashmap<>();
+				param.put("account_id", id);
+				param.put("name",       name);
+
+				NamedParameterJdbcTemplate np = new NamedParameterJdbcTemplate(this.dataSource);
+
+				SqlRowSet rs = np.queryForRowSet(sql, paramMap);
+
+				if (rs.next() ) {
+					Integer userid = rs.getInt("id");
+				}
+
+
+
+				--------------------------
+
+
+				SELECT id
+				from users
+				where id IN (1, 5, 10, 11)
+
+
+				List<Integer> listOfNumbers = Arrays.asList(1, 5, 10, 11);
+
+				String sql = """
+								SELECT id
+								from users
+								where id IN ( :my_list_of_ids )
+							""";
+
+
+
+
+
+
+				Map<String, Object> paramMap = new Hashmap<>();
+				param.put("my_list_of_ids", listOfNumbers);
+
+				NamedParameterJdbcTemplate np = new NamedParameterJdbcTemplate(this.dataSource);
+
+				SqlRowSet rs = np.queryForRowSet(sql, paramMap);
+
+				if (rs.next() ) {
+					Integer userid = rs.getInt("id");
+				}
+
