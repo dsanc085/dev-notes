@@ -1,0 +1,93 @@
+<div class="m-2.5">
+  <div class="grid grid-cols-2">
+    <div>
+      <span class="text-2xl">Reports Grid View</span>
+    </div>
+    <div class="flex place-content-end items-center">
+      <button type="button" title="help" mat-raised-button>Help</button>
+    </div>
+  </div>
+
+  <div class="overflow-y-auto pt-2.5" style="height: calc(100vh - 140px)">
+    <ag-grid-angular class="w-full h-full ag-theme-balham"
+    [gridOptions]   = "this.gridOptions"
+    [columnDefs]    = "this.columnDefs"
+    [defaultColDef] = "this.defaultColumnDef"
+    [rowData]       = "this.rowData">
+    </ag-grid-angular>
+  </div>
+</div>
+
+
+
+
+import { Component } from '@angular/core';
+import {ColDef, GridOptions} from "ag-grid-community";
+import {RowDataDTO} from "../../models/row-data-dto";
+
+@Component({
+  selector: 'app-reports-grid-view',
+  templateUrl: './reports-grid-view.component.html',
+  styleUrls: ['./reports-grid-view.component.scss']
+})
+export class ReportsGridViewComponent {
+
+  public gridOptions: GridOptions = {
+    domLayout: 'normal',
+    debug: true,
+    rowModelType: 'clientSide'
+  };
+
+  public columnDefs: ColDef[] = [
+    {
+      field: 'id',
+      headerName: 'ID'
+    },
+    {
+      field: 'name',
+      headerName: 'Name'
+    },
+    {
+      field: 'priority',
+      headerName: 'Priority'
+    },
+    {
+      field: 'start_date',
+      headerName: 'Start Date',
+    },
+    {
+      field: 'end_date',
+      headerName: 'End Date',
+    }
+  ];
+
+  public defaultColumnDef: ColDef = {
+    flex: 1,
+    sortable: true,
+    resizable: true
+  }
+
+  public rowData: RowDataDTO[] = [
+    {
+      id: 1,
+      name: "Data 1",
+      priority: "Low",
+      start_date: "05/01/2024",
+      end_date: "05/02/2024"
+    },
+    {
+      id: 2,
+      name: "Row 2",
+      priority: "Medium",
+      start_date: "06/01/2024",
+      end_date: "06/02/2024"
+    },
+    {
+      id: 3,
+      name: "Data 3",
+      priority: "High",
+      start_date: "07/01/2024",
+      end_date: "07/02/2024"
+    }
+  ];
+}

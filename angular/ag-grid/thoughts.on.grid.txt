@@ -1,0 +1,153 @@
+
+ Talk about Grids
+ ----------------
+ What percentage of our web pages are full-size grid pages?
+
+
+	Brad:   50%
+	Chris:  25%
+	Dennis: 33%
+	Andrew: 75%  <---- winner! winner!  Chicken Dinner!!!
+
+
+
+		+--------------------------------------------------+
+		| Manage Stuff                                     |
+		|                                                  |
+		|  +---------------------------------------------+ |
+        |  |  Action          |   name   | description   | |
+        |  |   <Edit><Delete> |          |               | |
+        |  |                  |          |               | |
+        |  +------------------+----------+---------------+ |
+        +--------------------------------------------------+
+
+
+
+
+
+
+ Dirty Secret about our Web Apps
+ -------------------------------
+ Details Page - 5 pages in one
+	-- Lots of tabs
+
+ Grid pages -- 75% of the pages
+
+
+
+
+ Choices on the Grids
+ --------------------
+  1) You can build your own -- This is fucking stupid / don't do this!!!
+
+  2) You can download a free one -- this is also stupid, but it's a better approach
+	 ALR's Opinion:  This is dangerous / you don't want your web app based on a grid that is supported by 2 guys
+                     This could be problematic:
+							What if the grid isn't fast enough?
+							What if the grid isn't flexible enough?  I just want to a put little HTML in a cell.  How hard could that be?
+							I just want my users to be able to drag & drop grid columns
+
+
+  3) You can buy one
+	 + It's money well spent *IF* it's flexible and fast
+	   ALR recommends using ag-grid
+
+
+
+ Where is the data?
+ ------------------
+ Two kinds of grids
+   A) Server Side Grid:  Stream in the data / load a page at a time
+                         When you scroll down in the grid, the ag-grid invokes a REST call to get another page
+                         The grid maintains an internal cache
+
+	  + When there's a SHIT LOAD of data!!!  I'm searching millions or billions of records
+	    The REST call will query ElasticSearch
+
+				Frontend Page
+					ag-grid ------------> invokes a REST call to get 1st page --------------> backend controller --------------> ServerSideGridService ------>  JSON query ---> hits ElasticSearch   --- 1 node
+											{                                                                                                                                            ^
+												starting_row: 0                                                                                                                          |
+												page_size:   20,                                                                                                                   sync-service
+												sorting                                                                                                                                  |
+												filters                                                                                                                                  V
+												search box                                                                                                                           Postgres
+											}
+
+
+				User scroll down	----> invokes a REST call to get 2nd page --------------> backend controller --------------> ServerSideGridService ----> hits ElasticSearch
+                        					{
+												starting_row: 21,
+												page_size:    20
+											}
+
+	  + It scales up / it will be fast today *AND* tomorrow
+      + If opens-up quick -- you're only loading 1 page of data
+	  + With ElasticSearch, supports a really powerful search box:  You can type-in   "this or that"  ,  "not this",    "(this or that) AND (cage_code:1)
+
+      - If data changes, it can get out of sync
+
+        -- Every REST Call that updates searchable data, needs to update the data in postgres **AND** ElasticSearch
+        -- Developers need a sync-service to rebuild ElasticSearch
+        -- Production needs a sync-service to rebuild ElasticSearch
+                          |
+                          V
+              IT'S COMPLEX TO BUILD
+				  a) You need an Search Engine
+				  b) YOu need a sync-service that reads from Postgres, populates the index
+				  c) You need to tell the Search Engine what columns are searchable -- mapping
+				  d) You need to make a REST call that will run a search, apply sorting, apply filters, return a page of data
+				     -- Need a REST call that takes a DTO, generates a JSON string, runs that ElasticSearch query, returns results
+			      e) You need to display the results and matching number of rows
+				  f) You have to gracefully handle bad queries in the search box
+							In the search box:    this AND AND that ---> that's not valid
+				  g) Configure your Java code to talk to ElasticSearch
+					 -- You need to make outgoing REST calls from the backend to ElasticSearch
+						*OR*
+					 -- You need to use a client library that takes an object, generates the JSON query, hits ElasticSearch
+
+
+
+
+        Works better with a no-sql document data-store / search engine then a postgres database -- like ElasticSearch
+		I need to keep my ElasticSearch and database in sync
+
+
+
+      -
+
+
+
+
+   B) Client Side Grid:  All data is loaded into the web browser's frontend grid
+	  + When you don't have a TON of data  *AND* the data does not grow!!!!!
+	    example) "Manage Countries" grid -- Approx 275 countries
+	  + It can be really responsive (once data is loaded)
+      + Really easy to implement
+	  + comes free with ag-grid
+      + Lots of examples on the Internet
+
+					ag-grid ------------> invokes a REST call to get *ALL* data  --------------> backend controller --------------> backend service ----> select * from.... ---> hits our database
+
+	  - Doesn't scale-up
+      - If the data grows, it can leave a TIME BOMB!!!
+      - When you have FEW records in the first few years --> Performance is good
+        After a few years, when you have LOTS of records --> Performance really sucks!!!!
+
+
+		WORST CASE:
+			The backend developer puts their database calls in a for loop
+
+						for (int i=1; i< 20; i++) {
+							// Execute a SQL call
+						}
+
+
+
+
+
+
+
+
+
+
