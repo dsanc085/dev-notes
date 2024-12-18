@@ -1,0 +1,105 @@
+<div class="m-2.5">
+  <div class="grid grid-cols-2">
+    <div>
+      <span class="text-2xl">Grid Page with Sorting</span>
+    </div>
+    <div class="flex place-content-end items-center">
+      Help Button
+    </div>
+  </div>
+
+  <div class="mt-5 overflow-y-auto" style="height: calc(100vh - 160px)">
+    <ag-grid-angular class="w-full h-full ag-theme-alpine"
+    [gridOptions]="this.gridOptions"
+    [columnDefs]="this.columnDefs"
+    [defaultColDef]="this.defaultColumnDef"
+    (gridReady)="onGridReady($event)">
+    </ag-grid-angular>
+  </div>
+</div>
+
+
+
+
+import { Component } from '@angular/core';
+import {ColDef, ColumnApi, GridApi, GridOptions, GridReadyEvent, ITextFilterParams} from "ag-grid-community";
+import {MySearchService} from "../../services/my-search.service";
+import {Subscription} from "rxjs";
+import {GridSortingRowDataDTO} from "../../models/grid-sorting-row-data-dto";
+import {DateService} from "../../services/date.service";
+
+@Component({
+  selector: 'app-grid-page-with-sorting',
+  templateUrl: './grid-page-with-sorting.component.html',
+  styleUrls: ['./grid-page-with-sorting.component.scss']
+})
+export class GridPageWithSortingComponent {
+
+  public gridOptions: GridOptions = {
+    domLayout: 'normal',
+    debug: false,
+    rowModelType: 'clientSide'
+  }
+
+  public columnDefs: ColDef[] = [
+    {
+      field: 'id',
+      headerName: 'ID'
+    },
+    {
+      field: 'contract_name',
+      headerName: 'Contract Name'
+    },
+    {
+      field: 'cage_code',
+      headerName: 'Cage Code'
+    },
+    {
+      field: 'start_date',
+      headerName: 'Start Date',
+      comparator: (a: string, b: string) => this.dateService.dateComparator(a, b)
+    },
+    {
+      field: 'end_date',
+      headerName: 'End Date',
+      comparator: (a: string, b: string) => this.dateService.dateComparator(a, b)
+    },
+];
+
+  public textFilterParams: ITextFilterParams = {
+    caseSensitive: false,
+    debounceMs: 200,
+    filterOptions: [ 'contains', 'notContains'],
+    maxNumConditions: 1
+  }
+
+  public defaultColumnDef: ColDef = {
+    flex: 1,
+    sortable: true,
+    floatingFilter: true,
+    filter: "agTextColumnFilter",
+    filterParams: this.textFilterParams
+  }
+
+  public constructor(private mySearchService: MySearchService,
+                     private dateService: DateService) {
+  }
+
+  public gridApi: GridApi;
+  public columnApi: ColumnApi;
+  public obs: Subscription;
+
+  public onGridReady(aParams: GridReadyEvent): void {
+    this.gridApi = aParams.api;
+    this.columnApi = aParams.columnApi;
+
+    this.gridApi.showLoadingOverlay();
+
+    this.mySearchService.getAllContracts().subscribe(
+      (aData: GridSortingRowDataDTO[]) => {
+        this.gridApi.setRowData(aData);
+      }
+    );
+  }
+
+}
