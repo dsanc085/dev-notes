@@ -1,0 +1,11 @@
+1. In Grid Options (GridOptions type):
+    rowSelection: 'multiple' // can be single too
+
+
+2. In ColumnDefs:
+    Set property in first column (or wherever you want it):
+        checkboxSelection: true
+
+3. Disable cell selection
+    In Grid Options (same as step 1):
+         suppressCellFocus: true
