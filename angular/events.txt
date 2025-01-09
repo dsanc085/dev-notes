@@ -1,0 +1,4 @@
+Binding - in parenthesis
+
+(input) - something in field changed
+(onKey) - also looks for key up and down
