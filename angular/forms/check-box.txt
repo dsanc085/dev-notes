@@ -1,0 +1,3 @@
+        <mat-checkbox title="Super User" aria-label="Super User" class="h-2.5">
+          Super User
+        </mat-checkbox>

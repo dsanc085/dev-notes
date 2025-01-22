@@ -1,0 +1,39 @@
+1. Lazy loaded:
+    <mat-tab-group>
+
+      <mat-tab label="User Profile Tab">
+        <ng-template matTabContent>
+          <app-tab-user-profile></app-tab-user-profile>
+        </ng-template>
+      </mat-tab>
+
+      <mat-tab label="Completed Actions Tab">
+        <ng-template matTabContent>
+          <app-tab-completed-actions></app-tab-completed-actions>
+        </ng-template>
+      </mat-tab>
+
+      <mat-tab label="Work-in-Progress Tab">
+        <ng-template matTabContent>
+          <app-tab-work-in-progress-actions></app-tab-work-in-progress-actions>
+        </ng-template>
+      </mat-tab>
+
+    </mat-tab-group>
+
+ 2. Eagerly Loaded:
+     <mat-tab-group>
+
+       <mat-tab label="User Profile Tab">
+           <app-tab-user-profile></app-tab-user-profile>
+       </mat-tab>
+
+       <mat-tab label="Completed Actions Tab">
+           <app-tab-completed-actions></app-tab-completed-actions>
+       </mat-tab>
+
+       <mat-tab label="Work-in-Progress Tab">
+           <app-tab-work-in-progress-actions></app-tab-work-in-progress-actions>
+       </mat-tab>
+
+     </mat-tab-group>
