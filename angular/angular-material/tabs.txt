@@ -37,3 +37,47 @@
        </mat-tab>
 
      </mat-tab-group>
+
+
+CSS:
+//div {
+//  border: 1px dashed black;
+//}
+
+:host ::ng-deep  .mat-mdc-tab-group, .mat-mdc-tab-nav-bar {
+  /* Change the text color of the tabs -- there are many states */
+  --mat-tab-header-active-focus-label-text-color: white;
+  --mat-tab-header-active-label-text-color : white;
+  --mat-tab-header-inactive-label-text-color: #AAAAC7;
+  --mat-tab-header-inactive-focus-label-text-color: #AAAAC7;
+  --mat-tab-header-inactive-hover-label-text-color : white;
+  --mdc-tab-indicator-active-indicator-color: white;
+  --mat-tab-header-active-hover-label-text-color: white;
+  --mat-tab-header-active-ripple-color: white;
+  --mat-tab-header-inactive-ripple-color: white;
+}
+
+:host ::ng-deep .mdc-tab-indicator__content {
+  display:none;
+}
+
+:host ::ng-deep .mdc-tab {
+  border: 2px solid #3296E1;
+  //box-sizing: border-box;
+  border-radius: 20px;
+  margin: 5px;
+  width: 170px !important;
+}
+
+:host ::ng-deep .mdc-tab:hover {
+  border: 2px solid white;
+}
+
+:host ::ng-deep .mdc-tab--active {
+  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#2a2a72+18,3296e1+100 */
+  background: linear-gradient(135deg,  #2a2a72 18%,#3296e1 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+:host ::ng-deep .mat-mdc-tab-header {
+  background-color: #2a2a72;
+}
