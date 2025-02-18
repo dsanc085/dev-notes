@@ -1,0 +1,30 @@
+Add this to chart options:
+
+           exporting: {
+                 buttons: {
+                    contextButton: {
+                        menuItems:  [
+                                'viewFullscreen',
+                                'printChart',
+                                'separator',
+                                'downloadPNG',
+                                'downloadJPEG',
+                                'downloadPDF',
+                                'downloadSVG',
+                                'separator',
+                                'downloadCSV',
+                                'downloadXLS',
+                                'viewData'
+                        ]
+                    }
+                }
+           }
+
+For custom option, add this:
+
+            {
+              text: 'Toggle Avocado',
+              onclick: () => {
+                this.toggleAvocadoTheme()
+              }
+            },

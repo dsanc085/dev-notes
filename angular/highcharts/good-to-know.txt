@@ -1,0 +1,21 @@
+1. Destroy all charts when leaving page - ngOnDestroy:
+          public ngOnDestroy(): void {
+
+            // Destroy all charts on this page
+            Highcharts.charts.forEach( (chart: Chart | undefined) => {
+              if (chart) {
+                chart.destroy();
+              }
+            });
+
+          }
+2. use TopoJSON for maps
+3. Disable accessibility to remove warnings:
+                  private chartOptions: any = {
+                        accessibility: {
+                            enabled: false
+                        },
+
+                        ....
+                  }
+4.
