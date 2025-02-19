@@ -1,0 +1,56 @@
+        <mat-form-field class="max-reduced-density w-3/4" subscriptSizing="dynamic">
+          <mat-chip-grid #chipGrid aria-label="Enter Country Alias" formControlName="aliases">
+            <mat-chip-row *ngFor="let alias of this.aliases; let index=index;"
+            (removed)="this.removeAlias(index)">
+<!--              chip text-->
+              {{alias}}
+<!--              add button to remove chip -->
+              <button matChipRemove>
+                <i class="fa-solid fa-circle-xmark text-black"></i>
+              </button>
+            </mat-chip-row>
+            <input placeholder="Enter Alias" [matChipInputFor]="chipGrid" [matChipInputSeparatorKeyCodes]="this.separatorKeysCodes"
+                   [matChipInputAddOnBlur]="true"
+                   (matChipInputTokenEnd)="this.addAlias($event)"
+                   />
+          </mat-chip-grid>
+          <mat-hint *ngIf="!this.myForm.controls.aliases.dirty">Press Enter to add alias</mat-hint>
+          <mat-error>Alias is required</mat-error>
+        </mat-form-field>
+
+
+
+  public aliases: string[] = [];
+  public separatorKeysCodes: number[] = [ENTER, COMMA];
+
+
+  public resetClicked(): void {
+    this.myForm.reset();
+    this.aliases = [];
+  }
+
+  public addAlias(aEvent: MatChipInputEvent): void {
+    let inputBox: MatChipInput = aEvent.chipInput;
+    let enteredValue: string = aEvent.value.trim();
+
+    if (enteredValue) {
+      this.aliases.push(enteredValue);
+      this.myForm.controls.aliases.setValue(this.aliases);
+    }
+
+    if (inputBox) {
+      // clear text so user can enter another alias
+      inputBox.inputElement.value = "";
+    }
+    this.myForm.controls.aliases.markAsDirty();
+  }
+
+  public removeAlias(aRemoveIndex: number): void {
+    if (aRemoveIndex < 0) {
+      return;
+    }
+
+    // remove item from array
+    this.aliases.splice(aRemoveIndex, 1);
+    this.myForm.controls.aliases.setValue(this.aliases);
+  }
