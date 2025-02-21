@@ -1,0 +1,126 @@
+ <div class="mt-5">
+    <div class="flex flex-col gap-y-5">
+      <div>
+        <span class="app-form-label">Filter the report by teams:</span>
+        <div class="searchBoxWrapper fa-border">
+          <input matInput type="text" title="Filter Report by Team" aria-label="Filter Report by Team" formControlName="teams"
+          id="searchBox" [matAutocomplete]="autocomplete1" placeholder="Enter Team Name"/>
+          <span class="searchBoxIcon"><i class="fa fa-search"></i></span>
+
+          <mat-autocomplete #autocomplete1="matAutocomplete" panelWidth="auto" (optionSelected)="this.userSelectedTeam($event.option.value)">
+            <ng-container *ngIf="(this.obsSearchMatchesToShow | async) as matches">
+              <ng-container *ngFor="let match of matches">
+                <mat-option [value]="match">
+                  <div class="flex flex-row">
+                    <div class="w-[200px]">{{match.teamDisplayedName}}</div>
+                    <div>{{match.teamPersonCount}}</div>
+                  </div>
+                </mat-option>
+              </ng-container>
+            </ng-container>
+
+          </mat-autocomplete>
+
+        </div>
+        <!-- display chips -->
+        <div class="flex flex-row gap-x-2">
+          <mat-chip-row *ngFor="let team of this.selectedTeams; let index = index;" (removed)="this.removeTeam(index)">
+            <div>
+              <!-- chip label -->
+              {{team.teamDisplayedName}}: {{team.teamPersonCount}}
+              <!-- button to remove chip -->
+              <button matChipRemove >
+                <i class="fa-solid fa-circle-xmark text-black"></i>
+              </button>
+            </div>
+
+          </mat-chip-row>
+        </div>
+
+
+      </div>
+      <div>
+        <span class="app-form-label">Filter the report by date range</span>
+        <mat-form-field subscriptSizing="dynamic" class="max-reduced-density">
+          <mat-date-range-input [rangePicker]="reportDateRange">
+            <input matStartDate type="text" placeholder="Start Date" title="Start Date" aria-label="Start Date" formControlName="startDate"/>
+            <input matEndDate type="text" placeholder="End Date" title="End Date" aria-label="End Date" formControlName="endDate"/>
+          </mat-date-range-input>
+          <mat-datepicker-toggle class="max-reduced-calendar" matIconSuffix [for]="reportDateRange"></mat-datepicker-toggle>
+          <mat-date-range-picker #reportDateRange></mat-date-range-picker>
+        </mat-form-field>
+      </div>
+    </div>
+
+  </div>
+
+
+
+
+export class ChipsWithAutoCompletePageComponent {
+  public myForm: FormGroup;
+
+  public obsSearchMatchesToShow: Observable<AutoCompleteMatchTeamDTO[]>;
+
+  public selectedTeams: AutoCompleteMatchTeamDTO[] = [];
+
+  public constructor(private formBuilder: FormBuilder,
+                     private reportService: ReportService) {}
+
+  public ngOnInit(): void {
+    this.myForm= this.formBuilder.group({
+      startDate: [null, null],
+      endDate: [null, null],
+      teams: [null, null]
+    });
+
+    this.obsSearchMatchesToShow = this.myForm.controls.teams.valueChanges.pipe(
+      startWith(''),
+      debounceTime(250),
+      switchMap( (aQuery: string) => {
+        return this.reportService.runTeamSearch(aQuery, 5);
+      })
+    );
+  }
+
+
+  public resetClicked(): void {
+    this.myForm.reset();
+    this.selectedTeams = [];
+  }
+
+  public runReportClicked(): void {
+
+  }
+
+  private isTeamAlreadySelected(aTeamId: number): boolean {
+    let team: AutoCompleteMatchTeamDTO;
+
+    for (team of this.selectedTeams) {
+      if (team.teamId == aTeamId) {
+        // match
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  public userSelectedTeam(aAutoCompleteMatch: AutoCompleteMatchTeamDTO): void {
+    if (!this.isTeamAlreadySelected(aAutoCompleteMatch.teamId)) {
+      this.selectedTeams.push(aAutoCompleteMatch);
+    }
+
+    // Clear text box when user selects team
+    this.myForm.controls.teams.setValue("");
+  }
+
+  public removeTeam(aIndex: number): void {
+    if (aIndex < 0) {
+      return;
+    }
+
+    this.selectedTeams.splice(aIndex, 1);
+  }
+}
+
