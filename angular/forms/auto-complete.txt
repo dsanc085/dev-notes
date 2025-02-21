@@ -1,0 +1,57 @@
+export class AutoCompletePageComponent {
+
+  public myForm: FormGroup;
+
+  public obsSearchMatchesToShow: Observable<AutoCompleteMatchDTO[]>;
+
+  public constructor(private symbolService: SymbolService,
+                     private formBuilder: FormBuilder) {}
+
+  public ngOnInit(): void {
+    this.myForm = this.formBuilder.group({
+      symbol: [null, null]
+    });
+
+    this.obsSearchMatchesToShow = this.myForm.controls.symbol.valueChanges.pipe(
+      startWith(''),
+      debounceTime(250),
+      switchMap( (aQuery: string) => {
+        return this.symbolService.runSymbolSearch(aQuery, 5);
+      })
+    );
+  }
+
+}
+
+
+
+    <div>
+      <span class="app-form-label">Symbol</span>
+      <div class="searchBoxWrapper fa-border w-[200px]">
+
+        <input formControlName="symbol" matInput type="text" title="Symbol Textbox" aria-label="Symbol Textbox"
+               class="" placeholder="Symbol" id="searchBox" [matAutocomplete]="autocomplete1"/>
+        <span class="searchBoxIcon"><i class="fa-regular fa-magnifying-glass"></i></span>
+
+        <mat-autocomplete #autocomplete1="matAutocomplete" panelWidth="auto">
+          <ng-container *ngIf="(this.obsSearchMatchesToShow | async) as matches">
+            <ng-container *ngFor="let match of matches">
+              <mat-option [value]="match.symbol">
+                <div class="flex flex-row">
+                  <div class="w-[80px]">
+                    {{match.symbol}}
+                  </div>
+                  <div class="flex flex-grow">
+                    {{match.businessName}}
+                  </div>
+                </div>
+
+              </mat-option>
+            </ng-container>
+          </ng-container>
+        </mat-autocomplete>
+
+      </div>
+    </div>
+
+
