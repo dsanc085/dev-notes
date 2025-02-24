@@ -8,6 +8,13 @@ In Spring, there are various predefined ones such as:
 
 @RequestBody - map data object from POST. See controller
 
-@Value - get value from yaml file
+@Value - get value from yaml file:
+  @Value("${assignment.queue.soft.max}")
+  private int defaultAssignmentQueueSoftMax;
+
+  Default:
+    @Value("${assignment.queue.soft.max}:10")
+    private int defaultAssignmentQueueSoftMax;
 
 @PostConstruct - function that is called after class is finished
+
