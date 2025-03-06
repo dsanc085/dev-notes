@@ -1,0 +1,165 @@
+DELETE /reports
+
+PUT /reports
+{
+  "settings": {
+    "max_ngram_diff": "25",
+    "refresh_interval": "1s",
+    "analysis": {
+      "normalizer": {
+        "case_insensitive": {
+          "type": "custom",
+          "char_filter": [],
+          "filter": ["lowercase", "asciifolding"]
+        }
+      },
+
+      "analyzer": {
+        "my_ngram_analyzer": {
+          "tokenizer": "my_ngram_tokenizer",
+          "filter": [
+            "lowercase"
+            ]
+        }
+      },
+
+      "tokenizer": {
+        "my_ngram_tokenizer": {
+          "type": "ngram",
+          "min_gram": "1",
+          "max_gram": "25",
+          "token_chars": []
+        }
+      }
+    }
+  },
+  "mappings": {
+    "dynamic": "strict",
+    "properties": {
+      "actors": {
+        "type": "text"
+      },
+      "description": {
+        "type": "text"
+      },
+      "priority": {
+        "type": "text",
+        "fields": {
+          "sort": {
+            "type": "keyword",
+            "normalizer": "case_insensitive"
+          },
+          "filtered": {
+            "type": "text",
+            "analyzer": "my_ngram_analyzer"
+          }
+        }
+      }
+    }
+  }
+}
+
+POST _bulk
+{ "index": {"_index": "reports", "_id": 1}}
+{ "priority": "low", "actors": "John Smith", "description": "he really likes o'reilly"}
+{ "index": {"_index": "reports", "_id": 2}}
+{ "priority": "LOW", "actors": "george washington", "description": "depending on the kind query, you might want to go different ways with it"}
+{ "index": {"_index": "reports", "_id": 3}}
+{ "priority": "high", "actors": "adam Smith"}
+{ "index": {"_index": "reports", "_id": 4}}
+{ "priority": "HIGH", "actors": "Adam Smith 3", "description": "This description is for record four"}
+{ "index": {"_index": "reports", "_id": 5}}
+{ "priority": "HIGH", "actors": ["Pat Benetar","Michael Jackson","George Michael"], "description": "There are too many singers from the 1980s listed here.  Get a life!!"}
+
+POST reports/_search
+
+POST reports/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match_all": {}
+        }
+        ],
+      "filter": [
+        {
+          "term": {
+          "priority.filtered": "ig"
+          }
+        }
+        ]
+    }
+  }
+}
+
+
+POST reports/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "query_string": {
+            "query": "description:*"
+          }
+        }
+        ],
+      "filter": [
+        {
+          "term": {
+          "priority.filtered": "ig"
+          }
+        }
+        ]
+    }
+  }
+}
+
+
+POST reports/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match_all": {}
+        }
+        ],
+      "filter": [
+        {
+          "term": {
+          "priority.filtered": "ow"
+          }
+        }
+        ]
+    }
+  },
+  "sort": {
+    "priority.sort": {
+      "order": "desc"
+    }
+  }
+}
+
+POST ni2_users/_search
+{
+  "_source": ["user_id", "full_name"],
+  "size": "5",
+  "query": {
+    "bool": {
+      "must": [
+        {
+        "match_all": {}
+        }
+      ],
+      "filter": [
+        {
+          "term": {
+            "full_name.filtered": "m user"
+          }
+        }]
+
+    }
+  }
+}
