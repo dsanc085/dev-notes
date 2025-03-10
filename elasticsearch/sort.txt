@@ -1,0 +1,80 @@
+GET _search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+DELETE /reports
+
+
+
+PUT /reports
+{
+  "settings": {
+        "analysis": {
+          "normalizer": {
+            "case_insensitive_normalizer": {
+              "type": "custom",
+              "char_filter": [],
+              "filter": [ "lowercase", "asciifolding" ]
+            }
+          }
+        },
+
+     "refresh_interval": "1s"
+  },
+  "mappings": {
+    "dynamic": "strict",
+    "properties": {
+      "actors": {
+        "type": "text"
+      },
+      "description": {
+        "type": "text"
+      },
+      "priority": {
+        "type": "text",
+         "fields": {
+           "raw": {
+             "type": "keyword"
+           },
+           "sort": {
+             "type": "keyword",
+             "normalizer": "case_insensitive_normalizer"
+           }
+        }
+      }
+    }
+  }
+}
+
+    POST _bulk
+    { "index": { "_index": "reports",  "_id": 1 }}
+    { "priority": "low", "actors": "John Smith", "description": "he really likes o'reilly"}
+    { "index": { "_index": "reports",  "_id": 2 }}
+    { "priority": "LOW", "actors": "george washington", "description": "depending on the kind query, you might want to go different ways with it"}
+    { "index": { "_index": "reports",  "_id": 3 }}
+    { "priority": "high", "actors": "adam Smith"}
+    { "index": { "_index": "reports",  "_id": 4 }}
+    { "priority": "HIGH", "actors": "Adam Smith 2", "description": "This description is for record four"}
+    { "index": { "_index": "reports",  "_id": 5 }}
+    { "priority": "HIGH", "actors": ["Pat Benetar", "Michael Jackson", "George Michael"], "description": "There are too many singers from the 1980s listed here.  Get a life!!"}
+
+
+
+      POST /reports/_search
+        {
+          "query": {
+              "match_all": {}
+          },
+           "size": 25,
+           "sort": [
+                 {
+                     "priority.sort": {
+                       "order": "asc",
+                       "missing" : "_first"
+                     }
+                   }
+                 ]
+        }

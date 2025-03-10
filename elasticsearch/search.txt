@@ -1,0 +1,146 @@
+PUT /reports
+{
+  "settings": {
+        "analysis": {
+          "normalizer": {
+            "case_insensitive_normalizer": {
+              "type": "custom",
+              "char_filter": [],
+              "filter": [ "lowercase", "asciifolding" ]
+            }
+          }
+        },
+
+     "refresh_interval": "1s"
+  },
+  "mappings": {
+    "dynamic": "strict",
+    "properties": {
+      "actors": {
+        "type": "text"
+      },
+      "description": {
+        "type": "text"
+      },
+      "priority": {
+        "type": "text"
+      }
+    }
+  }
+}
+
+POST _bulk
+{ "index": { "_index": "reports",  "_id": 1 }}
+{ "priority": "low", "actors": "John Smith", "description": "he really likes o'reilly"}
+{ "index": { "_index": "reports",  "_id": 2 }}
+{ "priority": "LOW", "actors": "george washington", "description": "depending on the kind query, you might want to go different ways with it"}
+{ "index": { "_index": "reports",  "_id": 3 }}
+{ "priority": "high", "actors": "adam Smith"}
+{ "index": { "_index": "reports",  "_id": 4 }}
+{ "priority": "HIGH", "actors": "Adam Smith 2", "description": "This description is for record four"}
+{ "index": { "_index": "reports",  "_id": 5 }}
+{ "priority": "HIGH", "actors": ["Pat Benetar", "Michael Jackson", "George Michael"], "description": "There are too many singers from the 1980s listed here.  Get a life!!"}
+
+// Search all
+
+POST /reports/_search
+
+POST /reports/_search
+{
+   "query": {
+       "match_all": {}
+   },
+   "size": 25
+}
+
+// Search multiple words
+
+POST /reports/_search
+ {
+    "query": {
+        "query_string": {
+           "query": "george washington"
+        }
+    },
+    "size": 25
+ }
+
+// search words with quotes
+
+     POST /reports/_search
+      {
+         "query": {
+             "query_string": {
+                "query": "\"george washington\""
+             }
+         },
+         "size": 25
+      }
+
+// search or
+    POST /reports/_search
+    {
+       "query": {
+           "query_string": {
+              "default_operator": "OR",
+              "query": "george washington"
+           }
+       },
+       "size": 25
+    }
+
+// search and
+    POST /reports/_search
+    {
+       "query": {
+           "query_string": {
+              "default_operator": "and",
+              "query": "george washington"
+           }
+       },
+       "size": 25
+    }
+
+// wildcard
+     POST /reports/_search
+     {
+        "query": {
+            "query_string": {
+               "query": "*life*"
+            }
+        },
+        "size": 25
+     }
+
+// serach not null descriptions
+    POST /reports/_search
+    {
+           "query": {
+               "query_string": {
+                  "query": "description:*"
+               }
+           },
+           "size": 25
+    }
+
+// search null description
+    POST /reports/_search
+    {
+         "query": {
+             "query_string": {
+                "query": "NOT description:*"
+             }
+         },
+         "size": 25
+    }
+
+// search high priority
+    POST /reports/_search
+       {
+          "query": {
+              "query_string": {
+                 "query": "priority:hiGH"
+              }
+          },
+          "size": 25
+       }
