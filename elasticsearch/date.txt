@@ -1,0 +1,134 @@
+GET _search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+DELETE /app_users
+
+PUT /app_users
+{
+  "settings": {
+    "refresh_interval": "1s"
+  },
+  "mappings": {
+    "dynamic": "strict",
+    "properties": {
+      "user_id": {
+        "type": "integer",
+        "ignore_malformed": false
+      },
+      "full_name": {
+        "type": "text"
+      },
+      "email_address": {
+        "type": "text"
+      },
+      "is_admin": {
+        "type": "boolean"
+      },
+      "created_date": {
+        "type": "date",
+        "format": "yyyy-MM-dd||MM/dd/yyyy||S||epoch_millis",
+        "ignore_malformed": true,
+        "fields": {
+          "txt": {
+            "type":"text",
+            "analyzer": "whitespace"
+          }
+        }
+      }
+    }
+  }
+}
+
+#default format is the same one you use to create/put in
+
+POST _bulk?refresh=wait_for
+{ "index": {"_index": "app_users", "_id": 101}}
+{ "user_id": 101, "full_name": "Kylo Ren", "created_date": "2025-02-02"}
+{ "index": {"_index": "app_users", "_id": 102}}
+{ "user_id": 102, "full_name": "FN247"}
+{ "index": {"_index": "app_users", "_id": 103}}
+{ "user_id": 103, "full_name": "Poe Dameron", "created_date": "2025-03-10"}
+{ "index": {"_index": "app_users", "_id": 104}}
+{ "user_id": 104, "full_name": "General Hux", "created_date": "2025-03-xx"}
+
+GET /app_users/_search
+
+POST _bulk
+{"update": {"_index": "app_users", "_id": 101}}
+{"doc": {"email_address": "kylo@undecided.com"}}
+{"update": {"_index": "app_users", "_id": 102}}
+{"doc": {"email_address": "fin@alliance.com"}}
+{"update": {"_index": "app_users", "_id": 103}}
+{"doc": {"email_address": "top@figher.pilots.com"}}
+{"update": {"_index": "app_users", "_id": 104}}
+{"doc": {"email_address": "hux@empire.rocks.com"}}
+
+
+POST _bulk?refresh=true   #synchronous, make public immediately
+
+GET _cat/aliases
+
+POST /app_users/_search
+{
+  "query": {
+    "query_string": {
+      "query": "created_date:[03/01/2025 TO now]"
+    }
+  }
+}
+
+POST /app_users/_search
+{
+  "query": {
+    "query_string": {
+      "query": "created_date:[now-1M TO now]"
+    }
+  }
+}
+
+POST /app_users/_search
+{
+  "query": {
+    "query_string": {
+      "query": "created_date:[03/01/2025 TO 03/10/2025]"
+    }
+  }
+}
+
+POST /app_users/_search
+{
+  "query": {
+    "query_string": {
+      "query": "created_date:[now-30d TO now]"
+    }
+  }
+}
+
+POST /app_users/_search
+{
+  "query": {
+    "query_string": {
+      "query": "2025-03*"
+    }
+  }
+}
+
+POST /app_users/_search
+{
+  "query": {
+    "query_string": {
+      "query": "*"
+    }
+  },
+  "sort": [
+    {
+    "created_date": {
+      "order": "desc"
+    }
+    }
+    ]
+}

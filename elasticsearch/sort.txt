@@ -23,7 +23,7 @@ PUT /reports
         },
 
      "refresh_interval": "1s"
-  },
+  }, ",
   "mappings": {
     "dynamic": "strict",
     "properties": {

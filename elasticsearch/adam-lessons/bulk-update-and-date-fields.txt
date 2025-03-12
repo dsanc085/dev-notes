@@ -1,0 +1,59 @@
+Recap
+ ------
+ 1. When doing a bulk update, 99% of the time, I use the
+
+			POST _bulk?refresh=wait_for                # Make this a synchronous REST call ***AND*** wait for the next refresh cycle
+														 + When this finishes, the data is searchable
+														 - This might cost you 1 whole second of wait time!!!
+                                                                                    ^
+                                                                                    |
+                                                                                refresh interval
+
+
+			POST _bulk                                  # This is fucking asynchronous!!!  So, you don't know when the results are public
+
+
+
+
+ 2. Date fields are really powerful
+	a. You can search and index as many formats as you want:  Just keep separating them with the ||
+	b. If you *STORE* the date field as 1234567890, then this is the crappy format you get by default
+	   SUGGESTION:  *STORE* the data field in the format you need so you can *RETURN* the data in the *CORRECT* format
+					+ The frontend doesn't have to reformat your fucking dates!!!
+					+ The backend doesn't have to reformat your fucking dates
+
+
+		If your sync-service, *STORES* the dates in the correct format, you don't have to do any *REFORMATTING*
+
+
+
+    c. You can do date range searches
+
+		created_date:[01/01/2020 TO 12/31/2024]
+
+		created_date:[now-1y TO now}
+
+		created_date:[now-30d TO now]     # last 30 days
+
+
+
+
+	d. Users like to search dates using wildcards.  So, let them
+		-- By adding a sub-field to your date with type:text
+
+				"created_date": {
+					"type": "date",
+					"format": "mm/dd/yyyy||yyyy-mmdd""
+
+
+					"fields": {
+
+						"text" : {
+							"type": "text"
+							"analyzer": "whitespace"
+						}
+					}
+				}
+
+
+					Search box:     03*2024 ----> matches every date in March 2024
